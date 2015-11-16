@@ -60,7 +60,7 @@ class SimpleChat extends PluginBase implements Listener {
       }
     }
     
-    if ($result >= 1){
+    if ($result >= "1"){
       $exli = $decoded_json["exclusionlist"];
       if ($exli === "off"){
         goto at;
