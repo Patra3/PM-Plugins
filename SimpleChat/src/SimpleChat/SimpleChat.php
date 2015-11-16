@@ -63,11 +63,15 @@ class SimpleChat extends PluginBase implements Listener {
     if ($result >= 1){
       $exli = $decoded_json["exclusionlist"];
       if ($exli === "off"){
-        return true;
+        goto at;
       }
       elseif (in_array($name, $exli)){
         return true;
       }
+      else{
+        goto at;
+      }
+      at:
       if ($decoded_json["filterYtype"] === "replace"){
         $message = str_ireplace($word_array, "****", $message);
         $event->setMessage($message);
