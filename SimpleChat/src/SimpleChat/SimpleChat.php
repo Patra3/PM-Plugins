@@ -50,19 +50,13 @@ class SimpleChat extends PluginBase implements Listener {
       }
     }
     elseif ($decoded_json["filterlevel"] === 2){
-      foreach ($messagearg as $word){
-        $current_lev = 0;
-        do {
-          similar_text($word, $word_array[$current_lev], $percent);
+      foreach($word_array as $filterword){
+        foreach ($messageary as $word){
+          similar_text($word, $filterword, $percent);
           if ($percent >= 50){
             $result = $result + 1;
-            $current_lev = $current_lev + 1;
-          }
-          else{
-            $current_lev = $current_lev + 1;
           }
         }
-        while ($total_am > $current_lev);
       }
     }
     
