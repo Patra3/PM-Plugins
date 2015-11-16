@@ -112,7 +112,7 @@ class SimpleChat extends PluginBase implements Listener {
     	  
     	  //pre-grabs the file, in case.
     	  $jsons = file_get_contents($this->getDataFolder()."/settings.json");
-    	  $decodes = json_decode($jsons);
+    	  $decodes = json_decode($jsons, true);
     	  $word_array = $decodes["words"];
     	  
     	  if (!isset($args[0])){
