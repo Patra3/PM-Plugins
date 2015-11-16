@@ -13,7 +13,7 @@ class SimpleChat extends PluginBase implements Listener {
       //MAKES THE SETTING.JSON
       $settings = array();
       $words = array();
-      $settings["filterlevel"] = 2;
+      $settings["filterlevel"] = 1;
       $settings["words"] = $words;
       $settings["exclusionlist"] = "off";
       $encoded = json_encode($settings);
@@ -27,10 +27,12 @@ class SimpleChat extends PluginBase implements Listener {
     $player = $event->getPlayer();
     $message = $event->getMessage();
     $messagearg = explode(" ", $message);
-    $amword = count($messagearg);
+    //optional : $amword = count($messagearg);
     //grabs needed measurements in settings.json
     $jsons = file_get_contents($this->getDataFolder()."/settings.json");
     $decoded_json = json_decode($jsons, true);
+    $word_array = $decoded_json["words"];
+    
     
     if ($decoded_json["filterlevel"] === 1){
       
