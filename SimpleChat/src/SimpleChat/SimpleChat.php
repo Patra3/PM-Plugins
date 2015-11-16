@@ -142,6 +142,8 @@ class SimpleChat extends PluginBase implements Listener {
     	      }
     	      else{
       	      array_push($word_array, $args[1]);
+      	      unset($decodes["words"]);
+      	      $decodes["words"] = $word_array;
       	      $newjson = json_encode($decodes);
       	      $this->updateJson($newjson);
       	      $sender->sendMessage(TextFormat::GREEN."Word has been added to the filter successfully.");
@@ -161,6 +163,8 @@ class SimpleChat extends PluginBase implements Listener {
     	      }
     	      else{
     	        unset($word_array[$args[1]]);
+    	        unset($decodes["words"]);
+    	        $decodes["words"] = $word_array;
     	        $newjson = json_encode($decodes);
     	        $this->updateJson($newjson);
     	        $sender->sendMessage(TextFormat::GREEN."Word has been removed from the filter successfully.");
@@ -207,6 +211,8 @@ class SimpleChat extends PluginBase implements Listener {
       	      $decodes["exclusionlist"] = array();
       	      $exlist = $decodes["exclusionlist"];
       	      array_push($exlist, $args[1]);
+      	      unset($decodes["exclusionlist"]);
+      	      $decodes["exclusionlist"] = $exlist;
       	      $newjson = json_encode($decodes);
       	      $this->updateJson($newjson);
       	      $sender->sendMessage(TextFormat::GREEN."Player has been added to the exclusion list.");
@@ -220,6 +226,8 @@ class SimpleChat extends PluginBase implements Listener {
     	        }
     	        else{
     	          array_push($exlist, $args[1]);
+    	          unset($decodes["exclusionlist"]);
+    	          $decodes["exclusionlist"] = $exlist;
     	          $newjson = json_encode($decodes);
     	          $this->updateJson($newjson);
     	          $sender->sendMessage(TextFormat::GREEN."Player has been added to the exclusion list.");
@@ -241,6 +249,8 @@ class SimpleChat extends PluginBase implements Listener {
     	      }
     	      else{
     	        unset($exlist[$args[1]]);
+    	        unset($decodes["exclusionlist"]);
+    	        $decodes["exclusionlist"] = $exlist;
     	        $newjson = json_encode($decodes);
     	        $this->updateJson($newJson);
     	        $sender->sendMessage(TextFormat::GREEN."Player has been removed from the exclusion list.");
