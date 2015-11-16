@@ -7,7 +7,7 @@ use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class SimpleChat extends PluginBase implements Listener {
   public function onEnable(){
@@ -26,7 +26,7 @@ class SimpleChat extends PluginBase implements Listener {
       fclose($handle);
     }
   }
-  public function onChat(PlayerChatEvent $event){
+  public function onPreprocess(PlayerCommandPreprocessEvent $event){
     //query basic information in event.
     $player = $event->getPlayer();
     $name = $player->getName();
