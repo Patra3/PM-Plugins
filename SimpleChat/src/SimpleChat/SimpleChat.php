@@ -74,6 +74,8 @@ class SimpleChat extends PluginBase implements Listener {
       elseif ($decoded_json["filterYtype"] === "warn"){
         $player->sendMessage(TextFormat::RED."Please do not swear.");
         $event->setCancelled();
+        $recipients = array();
+        $event->setRecipients($recipients);
         return true;
       }
     }
