@@ -52,7 +52,7 @@ class SimpleChat extends PluginBase implements Listener {
     }
     elseif ($decoded_json["filterlevel"] === 2){
       foreach($word_array as $filterword){
-        foreach ($messageary as $word){
+        foreach ($messagearg as $word){
           similar_text($word, $filterword, $percent);
           if ($percent >= 50){
             $result = $result + 1;
@@ -67,15 +67,13 @@ class SimpleChat extends PluginBase implements Listener {
         return true;
       }
       if ($decoded_json["filterYtype"] === "replace"){
-        $message = str_replace($word_array, "****", $message);
+        $message = str_ireplace($word_array, "****", $message);
         $event->setMessage($message);
         return true;
       }
       elseif ($decoded_json["filterYtype"] === "warn"){
         $player->sendMessage(TextFormat::RED."Please do not swear.");
         $event->setCancelled();
-        $recipients = array();
-        $event->setRecipients($recipients);
         return true;
       }
     }
