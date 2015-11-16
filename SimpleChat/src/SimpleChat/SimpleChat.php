@@ -18,7 +18,6 @@ class SimpleChat extends PluginBase implements Listener {
       $handle = fopen($this->getDataFolder."/settings.json", "w+");
       fwrite($handle, $encoded);
       fclose($handle);
-      
     }
   }
 }
