@@ -67,12 +67,7 @@ class SimpleChat extends PluginBase implements Listener {
         return true;
       }
       if ($decoded_json["filterYtype"] === "replace"){
-        $current_fy = 0;
-        do{
-          $message = str_replace($word_array[$current_fy], "****", $message);
-          $current_fy = $current_fy + 1;
-        }
-        while ($current_fy < $total_am);
+        $message = str_replace($word_array, "****", $message);
         $event->setMessage($message);
         return true;
       }
