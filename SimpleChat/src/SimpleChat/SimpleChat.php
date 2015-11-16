@@ -252,7 +252,7 @@ class SimpleChat extends PluginBase implements Listener {
     	        unset($decodes["exclusionlist"]);
     	        $decodes["exclusionlist"] = $exlist;
     	        $newjson = json_encode($decodes);
-    	        $this->updateJson($newJson);
+    	        $this->updateJson($newjson);
     	        $sender->sendMessage(TextFormat::GREEN."Player has been removed from the exclusion list.");
     	        return true;
     	      }
@@ -263,7 +263,7 @@ class SimpleChat extends PluginBase implements Listener {
     	      $sender->sendMessage(TextFormat::RED."/simplechat exclusion off");
     	      return true;
     	    }
-    	    elseif ($args[0] === "off"){
+    	    elseif ($args[1] === "off"){
     	      unset($decodes["exclusionlist"]);
     	      $decodes["exclusionlist"] = "off";
     	      $newjson = json_encode($decodes);
