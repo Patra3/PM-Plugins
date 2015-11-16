@@ -6,7 +6,7 @@ HalloweenPM :
 v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/HalloweenPM  
 
 ---
-TimeZones : 
-v1.2 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/TimeZones  
+TimeZones :  
+v1.1 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/TimeZones  
 
 ---
