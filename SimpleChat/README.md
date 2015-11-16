@@ -1,6 +1,6 @@
 #SimpleChat  
 Easy-to-use and smart chat filter system. Block the words you don't want, easily.  
-
+<img src="http://fustarbuffet.com/redstonecarrotpe/chatfilter1212.png" alt="Plugin Icon" style="width:90px;height:90px">  
 ---
 
 Commands:  
