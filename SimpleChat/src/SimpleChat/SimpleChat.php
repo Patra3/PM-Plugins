@@ -44,17 +44,9 @@ class SimpleChat extends PluginBase implements Listener {
     
     if ($decoded_json["filterlevel"] === 1){
       foreach ($messagearg as $word){
-        $current_lev = 0;
-        do {
-          if ($word != $word_array[$current_lev]){
-            $current_lev = $current_lev + 1;
-          }
-          elseif ($word === $word_array[$current_lev]){
-            $result = $result + 1;
-            $current_lev = $current_lev + 1;
-          }
+        if (in_array($word, $word_array, true)){
+          $result = $result + 1;
         }
-        while ($total_am > $current_lev);
       }
     }
     elseif ($decoded_json["filterlevel"] === 2){
