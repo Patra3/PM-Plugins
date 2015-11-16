@@ -11,6 +11,7 @@ use pocketmine\event\player\PlayerChatEvent;
 
 class SimpleChat extends PluginBase implements Listener {
   public function onEnable(){
+    $this->getServer()->registerEvents($this, $this);
     if (!is_dir($this->getDataFolder())){
       mkdir($this->getDataFolder());
       //MAKES THE SETTING.JSON
@@ -31,7 +32,6 @@ class SimpleChat extends PluginBase implements Listener {
     $player = $event->getPlayer();
     $name = $player->getName();
     $message = $event->getMessage();
-    $this->getLogger()->info($message);
     $messagearg = explode(" ", $message);
     //optional : $amword = count($messagearg);
     //grabs needed measurements in settings.json
@@ -44,7 +44,6 @@ class SimpleChat extends PluginBase implements Listener {
     $result = 0;
     
     if ($decoded_json["filterlevel"] === 1){
-      $this->getLogger()->info("1");
       foreach ($messagearg as $word){
         if (in_array($word, $word_array, true)){
           $result = $result + 1;
@@ -52,7 +51,6 @@ class SimpleChat extends PluginBase implements Listener {
       }
     }
     elseif ($decoded_json["filterlevel"] === 2){
-      $this->getLogger()->info("2");
       foreach($word_array as $filterword){
         foreach ($messageary as $word){
           similar_text($word, $filterword, $percent);
@@ -64,7 +62,6 @@ class SimpleChat extends PluginBase implements Listener {
     }
     
     if ($result >= 1){
-      $this->getLogger()->info("detected!");
       $exli = $decoded_json["exclusionlist"];
       if (in_array($name, $exli)){
         return true;
