@@ -36,7 +36,7 @@ class SimpleChat extends PluginBase implements Listener {
     //grabs needed measurements in settings.json
     $jsons = file_get_contents($this->getDataFolder()."/settings.json");
     $decoded_json = json_decode($jsons, true);
-    $word_array = json_decode($decoded_json["words"]);
+    $word_array = $decoded_json["words"];
     $total_am = count($word_array);
     
     //final pointers 
@@ -113,7 +113,7 @@ class SimpleChat extends PluginBase implements Listener {
     	  //pre-grabs the file, in case.
     	  $jsons = file_get_contents($this->getDataFolder()."/settings.json");
     	  $decodes = json_decode($jsons, true);
-    	  $word_array = json_decode($decodes["words"]);
+    	  $word_array = $decodes["words"];
     	  
     	  if (!isset($args[0])){
     	    $sender->sendMessage(TextFormat::RED."/simplechat help");
@@ -136,7 +136,7 @@ class SimpleChat extends PluginBase implements Listener {
     	      return true;
     	    }
     	    else{
-    	      if (in_array($args[1], $word_array)){
+    	      if (in_array($args[1], $word_array, true)){
     	        $sender->sendMessage(TextFormat::RED."Word is already in filter library.");
     	        return true;
     	      }
@@ -155,7 +155,7 @@ class SimpleChat extends PluginBase implements Listener {
     	      return true;
     	    }
     	    else{
-    	      if (!in_array($args[1], $word_array)){
+    	      if (!in_array($args[1], $word_array, true)){
     	        $sender->sendMessage(TextFormat::RED."That word was not set in the filter.");
     	        return true;
     	      }
@@ -235,7 +235,7 @@ class SimpleChat extends PluginBase implements Listener {
     	    }
     	    else{
     	      $exlist = $decodes["exclusionlist"];
-    	      if (!in_array($args[1], $exlist)){
+    	      if (!in_array($args[1], $exlist, true)){
     	        $sender->sendMessage(TextFormat::RED."Player is not in the exclusion list.");
     	        return true;
     	      }
