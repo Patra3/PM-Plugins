@@ -41,11 +41,13 @@ class SimpleChat extends PluginBase implements Listener {
     
     //final pointers 
     $result = 0;
+    $fixwords = array();
     
     if ($decoded_json["filterlevel"] === "1"){
       foreach ($messagearg as $word){
         if (in_array($word, $word_array, true)){
           $result = $result + 1;
+          array_push($fixwords, $word);
         }
       }
     }
@@ -55,6 +57,7 @@ class SimpleChat extends PluginBase implements Listener {
           similar_text($word, $filterword, $percent);
           if ($percent >= 50){
             $result = $result + 1;
+            array_push($fixwords, $word);
           }
         }
       }
@@ -73,7 +76,7 @@ class SimpleChat extends PluginBase implements Listener {
       }
       at:
       if ($decoded_json["filterYtype"] === "replace"){
-        $message = str_ireplace($word_array, "****", $message);
+        $message = str_ireplace($fixwords, "****", $message);
         $event->setMessage($message);
         return true;
       }
