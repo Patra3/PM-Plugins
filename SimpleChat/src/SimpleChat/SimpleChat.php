@@ -38,19 +38,18 @@ class SimpleChat extends PluginBase implements Listener {
     $jsons = file_get_contents($this->getDataFolder()."/settings.json");
     $decoded_json = json_decode($jsons, true);
     $word_array = $decoded_json["words"];
-    $total_am = count($word_array);
     
     //final pointers 
     $result = 0;
     
-    if ($decoded_json["filterlevel"] === 1){
+    if ($decoded_json["filterlevel"] === "1"){
       foreach ($messagearg as $word){
         if (in_array($word, $word_array, true)){
           $result = $result + 1;
         }
       }
     }
-    elseif ($decoded_json["filterlevel"] === 2){
+    elseif ($decoded_json["filterlevel"] === "2"){
       foreach($word_array as $filterword){
         foreach ($messagearg as $word){
           similar_text($word, $filterword, $percent);
@@ -63,7 +62,10 @@ class SimpleChat extends PluginBase implements Listener {
     
     if ($result >= 1){
       $exli = $decoded_json["exclusionlist"];
-      if (in_array($name, $exli)){
+      if ($exli === "off"){
+        return true;
+      }
+      elseif (in_array($name, $exli)){
         return true;
       }
       if ($decoded_json["filterYtype"] === "replace"){
