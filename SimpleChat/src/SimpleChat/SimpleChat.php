@@ -29,6 +29,7 @@ class SimpleChat extends PluginBase implements Listener {
   public function onChat(PlayerChatEvent $event){
     //query basic information in event.
     $player = $event->getPlayer();
+    $name = $player->getName();
     $message = $event->getMessage();
     $messagearg = explode(" ", $message);
     //optional : $amword = count($messagearg);
@@ -74,6 +75,10 @@ class SimpleChat extends PluginBase implements Listener {
     }
     
     if ($result >= 1){
+      $exli = $decoded_json["exclusionlist"];
+      if (in_array($name, $exli)){
+        return true;
+      }
       if ($decoded_json["filterYtype"] === "replace"){
         $current_fy = 0;
         do{
@@ -121,6 +126,7 @@ class SimpleChat extends PluginBase implements Listener {
     	    $sender->sendMessage("/simplechat set <1:2> : Sets filter level to 1, 2.");
     	    $sender->sendMessage("/simplechat exclude <player> : Adds a player to the exclusion list.");
     	    $sender->sendMessage("/simplechat unexclude <player> : Removes a player from the exclusion list.");
+    	    $sender->sendMessage("/simplechat exclusion off : Turns off exclusion list.");
     	    $sender->sendMessage("/simplechat mode <replace:warn> : Replaces word with ****, or warns sender.");
     	    return true;
     	  }
@@ -130,11 +136,17 @@ class SimpleChat extends PluginBase implements Listener {
     	      return true;
     	    }
     	    else{
-    	      array_push($word_array, $args[1]);
-    	      $newjson = json_encode($decodes);
-    	      $this->updateJson($newjson);
-    	      $sender->sendMessage(TextFormat::GREEN."Word has been added to the filter successfully.");
-    	      return true;
+    	      if (in_array($args[1], $word_array)){
+    	        $sender->sendMessage(TextFormat::RED."Word is already in filter library.");
+    	        return true;
+    	      }
+    	      else{
+      	      array_push($word_array, $args[1]);
+      	      $newjson = json_encode($decodes);
+      	      $this->updateJson($newjson);
+      	      $sender->sendMessage(TextFormat::GREEN."Word has been added to the filter successfully.");
+      	      return true;
+    	      }
     	    }
     	  }
     	  elseif ($args[0] === "remove"){
@@ -143,7 +155,7 @@ class SimpleChat extends PluginBase implements Listener {
     	      return true;
     	    }
     	    else{
-    	      if (!isset($word_array[$args[1]])){
+    	      if (!in_array($args[1], $word_array)){
     	        $sender->sendMessage(TextFormat::RED."That word was not set in the filter.");
     	        return true;
     	      }
@@ -184,7 +196,102 @@ class SimpleChat extends PluginBase implements Listener {
     	      }
     	    }
     	  }
-    	  elseif ($args[])
+    	  elseif ($args[0] === "exclude"){
+    	    if (!isset($args[1])){
+    	      $sender->sendMessage(TextFormat::RED."/simplechat exclude <player>");
+    	      return true;
+    	    }
+    	    else{
+    	      if ($decodes["exclusionlist"] === "off"){
+      	      unset($decodes["exclusionlist"]);
+      	      $decodes["exclusionlist"] = array();
+      	      $exlist = $decodes["exclusionlist"];
+      	      array_push($exlist, $args[1]);
+      	      $newjson = json_encode($decodes);
+      	      $this->updateJson($newjson);
+      	      $sender->sendMessage(TextFormat::GREEN."Player has been added to the exclusion list.");
+      	      return true;
+    	      }
+    	      else{
+    	        $exlist = $decodes["exclusionlist"];
+    	        if (in_array($args[1], $exlist)){
+    	          $sender->sendMessage(TextFormat::RED."Player is already excluded.");
+    	          return true;
+    	        }
+    	        else{
+    	          array_push($exlist, $args[1]);
+    	          $newjson = json_encode($decodes);
+    	          $this->updateJson($newjson);
+    	          $sender->sendMessage(TextFormat::GREEN."Player has been added to the exclusion list.");
+    	          return true;
+    	        }
+    	      }
+    	    }
+    	  }
+    	  elseif ($args[0] === "unexclude"){
+    	    if (!isset($args[1])){
+    	      $sender->sendMessage(TextFormat::RED."/simplechat unexclude <player>");
+    	      return true;
+    	    }
+    	    else{
+    	      $exlist = $decodes["exclusionlist"];
+    	      if (!in_array($args[1], $exlist)){
+    	        $sender->sendMessage(TextFormat::RED."Player is not in the exclusion list.");
+    	        return true;
+    	      }
+    	      else{
+    	        unset($exlist[$args[1]]);
+    	        $newjson = json_encode($decodes);
+    	        $this->updateJson($newJson);
+    	        $sender->sendMessage(TextFormat::GREEN."Player has been removed from the exclusion list.");
+    	        return true;
+    	      }
+    	    }
+    	  }
+    	  elseif ($args[0] === "exclusion"){
+    	    if (!isset($args[1])){
+    	      $sender->sendMessage(TextFormat::RED."/simplechat exclusion off");
+    	      return true;
+    	    }
+    	    elseif ($args[0] === "off"){
+    	      unset($decodes["exclusionlist"]);
+    	      $decodes["exclusionlist"] = "off";
+    	      $newjson = json_encode($decodes);
+    	      $this->updateJson($newJson);
+    	      $sender->sendMessage(TextFormat::GREEN."The exclusion list has been removed / off.");
+    	      return true;
+    	    }
+    	    else{
+    	      $sender->sendMessage(TextFormat::RED."/simplechat exclusion off");
+    	      return true;
+    	    }
+    	  }
+    	  elseif ($args[0] === "mode"){
+    	    if (!isset($args[1])){
+    	      $sender->sendMessage(TextFormat::RED."/simplechat mode <replace:warn>");
+    	      return true;
+    	    }
+    	    elseif ($args[1] === "replace"){
+    	      unset($decodes["filterYtype"]);
+    	      $decodes["filterYtype"] = "replace";
+    	      $newjson = json_encode($decodes);
+    	      $this->updateJson($newjson);
+    	      $sender->sendMessage(TextFormat::GREEN."Filter mode switched to replace.");
+    	      return true;
+    	    }
+    	    elseif ($args[1] === "warn"){
+    	      unset($decodes["filterYtype"]);
+    	      $decodes["filterYtype"] = "warn";
+    	      $newjson = json_encode($decodes);
+    	      $this->updateJson($newJson);
+    	      $sender->sendMessage(TextFormat::GREEN."Filter mode switched to warn.");
+    	      return true;
+    	    }
+    	    else{
+    	      $sender->sendMessage(TextFormat::RED."/simplechat mode <replace:warn>");
+    	      return true;
+    	    }
+    	  }
     	}
     }
 }
