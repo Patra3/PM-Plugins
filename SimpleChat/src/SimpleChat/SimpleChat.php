@@ -85,7 +85,7 @@ class SimpleChat extends PluginBase implements Listener {
           $message = str_replace($word_array[$current_fy], "****", $message);
           $current_fy = $current_fy + 1;
         }
-        while ($current_fy > $total_am);
+        while ($current_fy < $total_am);
         $event->setMessage($message);
         return true;
       }
