@@ -95,8 +95,21 @@ class SimpleChat extends PluginBase implements Listener {
     }
     
   }
-    public function onCommand(CommandSender $sender, Command $command, $label, array $args){
-    	if(strtolower($command->getName()) === "simplechat"){
+  public function updateJson($newjson){
+    // NOT API
+    unlink($this->getDataFolder()."/settings.json");
+    $handle = fopen($this->getDataFolder()."/settings.json", "w+");
+    fwrite($handle, $newjson);
+    fclose($handle);
+  }
+  public function onCommand(CommandSender $sender, Command $command, $label, array $args){
+    if(strtolower($command->getName()) === "simplechat"){
+    	  
+    	  //pre-grabs the file, in case.
+    	  $jsons = file_get_contents($this->getDataFolder()."/settings.json");
+    	  $decodes = json_decode($jsons);
+    	  $word_array = $decodes["words"];
+    	  
     	  if (!isset($args[0])){
     	    $sender->sendMessage(TextFormat::RED."/simplechat help");
     	    return true;
@@ -109,8 +122,69 @@ class SimpleChat extends PluginBase implements Listener {
     	    $sender->sendMessage("/simplechat exclude <player> : Adds a player to the exclusion list.");
     	    $sender->sendMessage("/simplechat unexclude <player> : Removes a player from the exclusion list.");
     	    $sender->sendMessage("/simplechat mode <replace:warn> : Replaces word with ****, or warns sender.");
+    	    return true;
     	  }
-    	  elseif ($args[0]){}
+    	  elseif ($args[0] === "add"){
+    	    if (!isset($args[1])){
+    	      $sender->sendMessage(TextFormat::RED."/simplechat add <word>");
+    	      return true;
+    	    }
+    	    else{
+    	      array_push($word_array, $args[1]);
+    	      $newjson = json_encode($decodes);
+    	      $this->updateJson($newjson);
+    	      $sender->sendMessage(TextFormat::GREEN."Word has been added to the filter successfully.");
+    	      return true;
+    	    }
+    	  }
+    	  elseif ($args[0] === "remove"){
+    	    if (!isset($args[1])){
+    	      $sender->sendMessage(TextFormat::RED."/simplechat remove <word>");
+    	      return true;
+    	    }
+    	    else{
+    	      if (!isset($word_array[$args[1]])){
+    	        $sender->sendMessage(TextFormat::RED."That word was not set in the filter.");
+    	        return true;
+    	      }
+    	      else{
+    	        unset($word_array[$args[1]]);
+    	        $newjson = json_encode($decodes);
+    	        $this->updateJson($newjson);
+    	        $sender->sendMessage(TextFormat::GREEN."Word has been removed from the filter successfully.");
+    	        return true;
+    	      }
+    	    }
+    	  }
+    	  elseif ($args[0] === "set"){
+    	    if (!isset($args[1])){
+    	      $sender->sendMessage(TextFormat::RED."/simplechat set <1:2>");
+    	      return true;
+    	    }
+    	    else{
+    	      if ($args[1] === 1){
+    	        unset($decodes["filterlevel"]);
+    	        $decodes["filterlevel"] = $args[1];
+    	        $newjson = json_encode($decodes);
+    	        $this->updateJson($newjson);
+    	        $sender->sendMessage(TextFormat::GREEN."Filter mode set to 1");
+    	        return true;
+    	      }
+    	      elseif ($args[1] === 2){
+    	        unset($decodes["filterlevel"]);
+    	        $decodes["filterlevel"] = $args[1];
+    	        $newjson = json_encode($decodes);
+    	        $this->updateJson($newjson);
+    	        $sender->sendMessage(TextFormat::GREEN."Filter mode set to 2");
+    	        return true;
+    	      }
+    	      else{
+    	        $sender->sendMessage(TextFormat::RED."/simplechat set <1:2>");
+    	        return true;
+    	      }
+    	    }
+    	  }
+    	  elseif ($args[])
     	}
     }
 }
