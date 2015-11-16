@@ -3,3 +3,9 @@ main: SimpleChat\SimpleChat
 version: 1.0.0
 api: 1.13.0
 author: HotFireYDeath/Chopstick Software
+
+commands:
+ simplechat:
+  description: SimpleChat command.
+  usage: /simplechat
+  permission: simplechat.main
