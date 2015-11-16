@@ -41,27 +41,27 @@ class SimpleChat extends PluginBase implements Listener {
     $total_am = count($word_array);
     
     //final pointers 
-    $result = "0";
+    $result = 0;
     
-    if ($decoded_json["filterlevel"] === "1"){
+    if ($decoded_json["filterlevel"] === 1){
       foreach ($messagearg as $word){
         if (in_array($word, $word_array, true)){
-          $result = $result + "1";
+          $result = $result + 1;
         }
       }
     }
-    elseif ($decoded_json["filterlevel"] === "2"){
+    elseif ($decoded_json["filterlevel"] === 2){
       foreach($word_array as $filterword){
         foreach ($messagearg as $word){
           similar_text($word, $filterword, $percent);
-          if ($percent >= "50"){
-            $result = $result + "1";
+          if ($percent >= 50){
+            $result = $result + 1;
           }
         }
       }
     }
     
-    if ($result >= "1"){
+    if ($result >= 1){
       $exli = $decoded_json["exclusionlist"];
       if (in_array($name, $exli)){
         return true;
