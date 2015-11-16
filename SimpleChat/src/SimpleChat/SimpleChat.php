@@ -5,6 +5,8 @@ namespace SimpleChat;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat;
+use pocketmine\command\Command;
+use pocketmine\command\CommandSender;
 use pocketmine\event\player\PlayerChatEvent;
 
 class SimpleChat extends PluginBase implements Listener {
@@ -14,7 +16,7 @@ class SimpleChat extends PluginBase implements Listener {
       //MAKES THE SETTING.JSON
       $settings = array();
       $words = array();
-      $settings["filterlevel"] = 1;
+      $settings["filterlevel"] = 2;
       $settings["words"] = $words;
       $settings["filterYtype"] = "replace";
       $settings["exclusionlist"] = "off";
@@ -55,10 +57,20 @@ class SimpleChat extends PluginBase implements Listener {
       }
     }
     elseif ($decoded_json["filterlevel"] === 2){
-      
-    }
-    elseif ($decoded_json["filterlevel"] === 3){
-      
+      foreach ($messagearg as $word){
+        $current_lev = 0;
+        do {
+          similar_text($word, $word_array[$current_lev], $percent);
+          if ($percent >= 50){
+            $result = $result + 1;
+            $current_lev = $current_lev + 1;
+          }
+          else{
+            $current_lev = $current_lev + 1;
+          }
+        }
+        while ($total_am > $current_lev);
+      }
     }
     
     if ($result >= 1){
@@ -83,4 +95,22 @@ class SimpleChat extends PluginBase implements Listener {
     }
     
   }
+    public function onCommand(CommandSender $sender, Command $command, $label, array $args){
+    	if(strtolower($command->getName()) === "simplechat"){
+    	  if (!isset($args[0])){
+    	    $sender->sendMessage(TextFormat::RED."/simplechat help");
+    	    return true;
+    	  }
+    	  elseif ($args[0] === "help"){
+    	    $sender->sendMessage("/simplechat help : Lists all simplechat commands.");
+    	    $sender->sendMessage("/simplechat add <word> : Adds a word into the filter.");
+    	    $sender->sendMessage("/simplechat remove <word> : Removes a word from the filter.");
+    	    $sender->sendMessage("/simplechat set <1:2> : Sets filter level to 1, 2.");
+    	    $sender->sendMessage("/simplechat exclude <player> : Adds a player to the exclusion list.");
+    	    $sender->sendMessage("/simplechat unexclude <player> : Removes a player from the exclusion list.");
+    	    $sender->sendMessage("/simplechat mode <replace:warn> : Replaces word with ****, or warns sender.");
+    	  }
+    	  elseif ($args[0]){}
+    	}
+    }
 }
