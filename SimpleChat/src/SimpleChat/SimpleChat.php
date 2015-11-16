@@ -3,6 +3,8 @@
 namespace SimpleChat;
 
 use pocketmine\plugin\PluginBase;
+use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerChatEvent;
 
 class SimpleChat extends PluginBase implements Listener {
   public function onEnable(){
@@ -15,9 +17,30 @@ class SimpleChat extends PluginBase implements Listener {
       $settings["words"] = $words;
       $settings["exclusionlist"] = "off";
       $encoded = json_encode($settings);
-      $handle = fopen($this->getDataFolder."/settings.json", "w+");
+      $handle = fopen($this->getDataFolder()."/settings.json", "w+");
       fwrite($handle, $encoded);
       fclose($handle);
     }
+  }
+  public function onChat(PlayerChatEvent $event){
+    //query basic information in event.
+    $player = $event->getPlayer();
+    $message = $event->getMessage();
+    $messagearg = explode(" ", $message);
+    $amword = count($messagearg);
+    //grabs needed measurements in settings.json
+    $jsons = file_get_contents($this->getDataFolder()."/settings.json");
+    $decoded_json = json_decode($jsons, true);
+    
+    if ($decoded_json["filterlevel"] === 1){
+      
+    }
+    elseif ($decoded_json["filterlevel"] === 2){
+      
+    }
+    elseif ($decoded_json["filterlevel"] === 3){
+      
+    }
+    
   }
 }
