@@ -249,7 +249,7 @@ class SimpleChat extends PluginBase implements Listener {
     	        return true;
     	      }
     	      else{
-    	        $key = array_search($args[1], $exlist)
+    	        $key = array_search($args[1], $exlist);
     	        unset($exlist[$key]);
     	        unset($decodes["exclusionlist"]);
     	        $decodes["exclusionlist"] = $exlist;
