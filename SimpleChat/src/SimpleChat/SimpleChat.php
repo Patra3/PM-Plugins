@@ -174,7 +174,7 @@ class SimpleChat extends PluginBase implements Listener {
     	      return true;
     	    }
     	    else{
-    	      if ($args[1] === 1){
+    	      if ($args[1] === "1"){
     	        unset($decodes["filterlevel"]);
     	        $decodes["filterlevel"] = $args[1];
     	        $newjson = json_encode($decodes);
@@ -182,7 +182,7 @@ class SimpleChat extends PluginBase implements Listener {
     	        $sender->sendMessage(TextFormat::GREEN."Filter mode set to 1");
     	        return true;
     	      }
-    	      elseif ($args[1] === 2){
+    	      elseif ($args[1] === "2"){
     	        unset($decodes["filterlevel"]);
     	        $decodes["filterlevel"] = $args[1];
     	        $newjson = json_encode($decodes);
