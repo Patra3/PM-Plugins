@@ -36,7 +36,7 @@ class SimpleChat extends PluginBase implements Listener {
     //grabs needed measurements in settings.json
     $jsons = file_get_contents($this->getDataFolder()."/settings.json");
     $decoded_json = json_decode($jsons, true);
-    $word_array = $decoded_json["words"];
+    $word_array = json_decode($decoded_json["words"]);
     $total_am = count($word_array);
     
     //final pointers 
@@ -113,7 +113,7 @@ class SimpleChat extends PluginBase implements Listener {
     	  //pre-grabs the file, in case.
     	  $jsons = file_get_contents($this->getDataFolder()."/settings.json");
     	  $decodes = json_decode($jsons, true);
-    	  $word_array = $decodes["words"];
+    	  $word_array = json_decode($decodes["words"]);
     	  
     	  if (!isset($args[0])){
     	    $sender->sendMessage(TextFormat::RED."/simplechat help");
