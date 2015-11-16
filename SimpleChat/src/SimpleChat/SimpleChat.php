@@ -267,7 +267,7 @@ class SimpleChat extends PluginBase implements Listener {
     	      unset($decodes["exclusionlist"]);
     	      $decodes["exclusionlist"] = "off";
     	      $newjson = json_encode($decodes);
-    	      $this->updateJson($newJson);
+    	      $this->updateJson($newjson);
     	      $sender->sendMessage(TextFormat::GREEN."The exclusion list has been removed / off.");
     	      return true;
     	    }
@@ -293,7 +293,7 @@ class SimpleChat extends PluginBase implements Listener {
     	      unset($decodes["filterYtype"]);
     	      $decodes["filterYtype"] = "warn";
     	      $newjson = json_encode($decodes);
-    	      $this->updateJson($newJson);
+    	      $this->updateJson($newjson);
     	      $sender->sendMessage(TextFormat::GREEN."Filter mode switched to warn.");
     	      return true;
     	    }
