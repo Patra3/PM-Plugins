@@ -7,10 +7,11 @@ use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class SimpleChat extends PluginBase implements Listener {
   public function onEnable(){
+    $this->getServer()->getPluginManager()->registerEvents($this, $this);
     if (!is_dir($this->getDataFolder())){
       mkdir($this->getDataFolder());
       //MAKES THE SETTING.JSON
@@ -26,7 +27,7 @@ class SimpleChat extends PluginBase implements Listener {
       fclose($handle);
     }
   }
-  public function onChat(PlayerChatEvent $event){
+  public function onPreprocess(PlayerCommandPreprocessEvent $event){
     //query basic information in event.
     $player = $event->getPlayer();
     $name = $player->getName();
@@ -44,33 +45,19 @@ class SimpleChat extends PluginBase implements Listener {
     
     if ($decoded_json["filterlevel"] === 1){
       foreach ($messagearg as $word){
-        $current_lev = 0;
-        do {
-          if ($word != $word_array[$current_lev]){
-            $current_lev = $current_lev + 1;
-          }
-          elseif ($word === $word_array[$current_lev]){
-            $result = $result + 1;
-            $current_lev = $current_lev + 1;
-          }
+        if (in_array($word, $word_array, true)){
+          $result = $result + 1;
         }
-        while ($total_am > $current_lev);
       }
     }
     elseif ($decoded_json["filterlevel"] === 2){
-      foreach ($messagearg as $word){
-        $current_lev = 0;
-        do {
-          similar_text($word, $word_array[$current_lev], $percent);
+      foreach($word_array as $filterword){
+        foreach ($messagearg as $word){
+          similar_text($word, $filterword, $percent);
           if ($percent >= 50){
             $result = $result + 1;
-            $current_lev = $current_lev + 1;
-          }
-          else{
-            $current_lev = $current_lev + 1;
           }
         }
-        while ($total_am > $current_lev);
       }
     }
     
@@ -80,12 +67,7 @@ class SimpleChat extends PluginBase implements Listener {
         return true;
       }
       if ($decoded_json["filterYtype"] === "replace"){
-        $current_fy = 0;
-        do{
-          $message = str_replace($word_array[$current_fy], "****", $message);
-          $current_fy = $current_fy + 1;
-        }
-        while ($current_fy < $total_am);
+        $message = str_ireplace($word_array, "****", $message);
         $event->setMessage($message);
         return true;
       }
