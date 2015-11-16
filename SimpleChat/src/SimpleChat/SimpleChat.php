@@ -162,8 +162,8 @@ class SimpleChat extends PluginBase implements Listener {
     	        return true;
     	      }
     	      else{
-    	        $tyd = $args[1];
-    	        unset($word_array[$tyd]);
+    	        $key = array_search($args[1], $word_array);
+    	        unset($word_array[$key]);
     	        unset($decodes["words"]);
     	        $decodes["words"] = $word_array;
     	        $newjson = json_encode($decodes);
@@ -249,8 +249,8 @@ class SimpleChat extends PluginBase implements Listener {
     	        return true;
     	      }
     	      else{
-    	        $tyd = $args[1];
-    	        unset($exlist[$tyd]);
+    	        $key = array_search($args[1], $exlist)
+    	        unset($exlist[$key]);
     	        unset($decodes["exclusionlist"]);
     	        $decodes["exclusionlist"] = $exlist;
     	        $newjson = json_encode($decodes);
