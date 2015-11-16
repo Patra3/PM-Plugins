@@ -11,7 +11,7 @@ use pocketmine\event\player\PlayerChatEvent;
 
 class SimpleChat extends PluginBase implements Listener {
   public function onEnable(){
-    $this->getServer()->registerEvents($this, $this);
+    $this->getServer()->getPluginManager()->registerEvents($this, $this);
     if (!is_dir($this->getDataFolder())){
       mkdir($this->getDataFolder());
       //MAKES THE SETTING.JSON
