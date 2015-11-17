@@ -12,3 +12,5 @@ Features:
 -  - Manage players.
 -  - Custom file management.
 - Manage FTP files.
+-  - Maintain multiple connections.
+-  - Save FTP data for later use.
