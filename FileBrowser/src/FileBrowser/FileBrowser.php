@@ -37,7 +37,13 @@ class FileBrowser extends PluginBase {
     if ($connections === "none"){
       unset($ftpy["openConnections"]);
       $ftpy["openConnections"] = array();
-      array_push($ftpy["openConnections"], $connect);
+      $kep = array();
+      $kep["username"] = $username;
+      $kep["password"] = $password;
+      $kep["host"] = $host;
+      $kep["port"] = $port;
+      $kep["connection"] = $connect;
+      array_push($ftpy["openConnections"], $kep);
       unset($decd["ftp"]);
       $decd["ftp"] = $ftpy;
       $encode = json_encode($decd);
@@ -48,7 +54,13 @@ class FileBrowser extends PluginBase {
       return true;
     }
     else{
-      array_push($ftpy["openConnections"], $connect);
+      $kep = array();
+      $kep["username"] = $username;
+      $kep["password"] = $password;
+      $kep["host"] = $host;
+      $kep["port"] = $port;
+      $kep["connection"] = $connect;
+      array_push($ftpy["openConnections"], $kep);
       unset($decd["ftp"]);
       $decd["ftp"] = $ftpy;
       $encode = json_encode($decd);
@@ -125,6 +137,9 @@ class FileBrowser extends PluginBase {
               return true;
             }
           }
+        }
+        elseif ($args[1] === "deletefile"){
+          
         }
       }
     }
