@@ -20,6 +20,36 @@ class FileBrowser extends PluginBase {
     fwrite($handle, $string);
     fclose($handle);
   }
+  public function editFTPconnection($id, $option, $newvalue){
+    /*
+    * PART OF THE FILEBROWSER API
+    * Edits an FTP connection, specifically by id. $newvalue is the new connection value, $option being reference (username).
+    */
+    $data = file_get_contents($this->getDataFolder()."/data.json");
+    $dect = json_decode($data);
+    $ftpy = $dect["ftp"];
+    $inner = $ftpy["openConnections"];
+    $access = $inner[$id];
+    if (!isset($access[$option])){
+      return false;
+    }
+    else{
+      unset($access[$option]);
+      $access[$option] = $newoption;
+      unset($inner[$id]);
+      $inner[$id] = $access;
+      unset($ftpy["openConnections"]);
+      $ftpy["openConnections"] = $inner;
+      unset($dect["ftp"]);
+      $dect["ftp"] = $ftpy;
+      $enc = json_encode($dect);
+      unlink($this->getDataFolder()."/data.json");
+      $handle = fopen($this->getDataFolder()."/data.json", "w+");
+      fwrite($handle, $enc);
+      fclose($handle);
+      return true;
+    }
+  }
   public function removeFTPconnection($id){
     /*
     * PART OF THE FILEBROWSER API
