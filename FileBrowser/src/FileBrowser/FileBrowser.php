@@ -20,6 +20,41 @@ class FileBrowser extends PluginBase {
     fwrite($handle, $string);
     fclose($handle);
   }
+  public function addFTPconnection($host, $port, $username, $password){
+    $data = file_get_contents($this->getDataFolder()."/data.json");
+    $decd = json_decode($data);
+    $ftpy = $decd["ftp"];
+    $connections = $ftpy["openConnections"];
+    $connect = ftp_connect($host, $port);
+    if (!ftp_connect($host, $port)){
+      return false;
+    }
+    if ($connections === "none"){
+      unset($ftpy["openConnections"]);
+      $ftpy["openConnections"] = array();
+      array_push($ftpy["openConnections"], $connect);
+      unset($decd["ftp"]);
+      $decd["ftp"] = $ftpy;
+      $encode = json_encode($decd);
+      unlink($this->getDataFolder()."/data.json");
+      $handle = fopen($this->getDataFolder()."/data.json", "w+");
+      fwrite($handle, $encode);
+      fclose($handle);
+      return true;
+    }
+    else{
+      array_push($ftpy["openConnections"], $connect);
+      unset($decd["ftp"]);
+      $decd["ftp"] = $ftpy;
+      $encode = json_encode($decd);
+      unlink($this->getDataFolder()."/data.json");
+      $handle = fopen($this->getDataFolder()."/data.json", "w+");
+      fwrite($handle, $encode);
+      fclose($handle);
+      return true;
+    }
+    
+  }
   public function onCommand(CommandSender $sender, Command $command, $label, array $args){
     if(strtolower($command->getName()) === "filebrowser"){
       $data = file_get_contents($this->getDataFolder()."/data.json");
@@ -63,7 +98,21 @@ class FileBrowser extends PluginBase {
             $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
           }
           else{
-            
+            $connf = ftp_connect($host, $port);
+            $connections = array();
+            array_push($connections, $connf);
+            if ($ftpdata["openConnections"] === "none"){
+              unset($ftpdata["openConnections"]);
+              $ftpdata["openConnections"] = $connections;
+              unset($truw["ftp"]);
+              $truw["ftp"] = $ftpdata;
+            }
+            elseif (!isset($ftpdata["openConnections"])){
+              
+            }
+            else{
+              
+            }
           }
         }
       }
