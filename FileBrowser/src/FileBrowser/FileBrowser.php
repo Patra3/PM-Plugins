@@ -243,6 +243,34 @@ class FileBrowser extends PluginBase {
               }
             }
           }
+          elseif ($args[2] === "edit"){
+            if (!isset($args[3])){
+              $sender->sendMessage(TextFormat::RED."/filebrowser ftp connection edit <id> <type> <newvalue>");
+              return true;
+            }
+            elseif (!isset($args[4])){
+              $sender->sendMessage(TextFormat::RED."/filebrowser ftp connection edit <id> <type> <newvalue>");
+              return true;
+            }
+            elseif (!isset($args[5])){
+              $sender->sendMessage(TextFormat::RED."/filebrowser ftp connection edit <id> <type> <newvalue>");
+              return true;
+            }
+            else{
+              $id = $args[3];
+              $option = $args[4];
+              $newvalue = $args[5];
+              $this->editFTPconnection($id, $option, $newvalue);
+              if ($this->editFTPconnection($id, $option, $newvalue)){
+                $sender->sendMessage(TextFormat::GREEN."[FileBrowser] FTP connection edited.");
+                return true;
+              }
+              else{
+                $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP editing unsuccessful. Try again.");
+                return true;
+              }
+            }
+          }
         }
         elseif ($args[1] === "download"){
           if (!isset($args[2])){
