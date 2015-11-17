@@ -138,7 +138,7 @@ class FileBrowser extends PluginBase {
             }
           }
         }
-        elseif ($args[1] === "deletefile"){
+        elseif ($args[1] === "download"){
           
         }
       }
