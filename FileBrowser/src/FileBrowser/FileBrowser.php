@@ -25,7 +25,8 @@ class FileBrowser extends PluginBase {
     $decd = json_decode($data);
     $ftpy = $decd["ftp"];
     $connections = $ftpy["openConnections"];
-    $connect = ftp_connect($host, $port);
+    $connectd = ftp_connect($host, $port);
+    $connect = ftp_login($connectd, $username, $password);
     if (!ftp_connect($host, $port)){
       return false;
     }
@@ -98,21 +99,7 @@ class FileBrowser extends PluginBase {
             $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
           }
           else{
-            $connf = ftp_connect($host, $port);
-            $connections = array();
-            array_push($connections, $connf);
-            if ($ftpdata["openConnections"] === "none"){
-              unset($ftpdata["openConnections"]);
-              $ftpdata["openConnections"] = $connections;
-              unset($truw["ftp"]);
-              $truw["ftp"] = $ftpdata;
-            }
-            elseif (!isset($ftpdata["openConnections"])){
-              
-            }
-            else{
-              
-            }
+            $this->addFTPconnection($host, $port, $username, $password);
           }
         }
       }
