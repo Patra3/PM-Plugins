@@ -51,6 +51,20 @@ class FileBrowser extends PluginBase {
             $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
             return true;
           }
+          elseif (!isset($args[3])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
+            return true;
+          }
+          elseif (!isset($args[4])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
+            return true;
+          }
+          elseif (!isset($args[5])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
+          }
+          else{
+            
+          }
         }
       }
     }
