@@ -30,7 +30,6 @@ class FileBrowser extends PluginBase {
     $ftpy = $decd["ftp"];
     $connections = $ftpy["openConnections"];
     $connectd = ftp_connect($host, $port);
-    $connect = ftp_login($connectd, $username, $password);
     if (!ftp_connect($host, $port)){
       return false;
     }
@@ -42,7 +41,7 @@ class FileBrowser extends PluginBase {
       $kep["password"] = $password;
       $kep["host"] = $host;
       $kep["port"] = $port;
-      $kep["connection"] = $connect;
+      $kep["connection"] = $connectd;
       array_push($ftpy["openConnections"], $kep);
       unset($decd["ftp"]);
       $decd["ftp"] = $ftpy;
@@ -59,7 +58,7 @@ class FileBrowser extends PluginBase {
       $kep["password"] = $password;
       $kep["host"] = $host;
       $kep["port"] = $port;
-      $kep["connection"] = $connect;
+      $kep["connection"] = $connectd;
       array_push($ftpy["openConnections"], $kep);
       unset($decd["ftp"]);
       $decd["ftp"] = $ftpy;
@@ -138,8 +137,35 @@ class FileBrowser extends PluginBase {
             }
           }
         }
+        elseif ($args[1] === "connection"){
+          $ftpdata = $truw["ftp"];
+          $connections = $ftpdata["openConnections"];
+          if ($args[2] === "list"){
+            $sender->sendMessage("[FileBrowser] Connections: ");
+            foreach ($connections as $cont){
+              foreach ($cont as $maps){
+                $username = $maps["username"];
+                $password = $maps["password"];
+                $host = $maps["host"];
+                $port = $maps["port"];
+              }
+              $conkey = array_search($cont, $connections);
+              $sender->sendMessage("[".$conkey."] Usr: ".$username.", Pswd: ".$password.", Host: ".$host.", Port: ".$port);
+            }
+          }
+          elseif (!isset($args[2])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser connection help");
+            return true;
+          }
+        }
         elseif ($args[1] === "download"){
-          
+          if (!isset($args[2])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp download <filepath> <connectionid>");
+            return true;
+          }
+          else{
+            
+          }
         }
       }
     }
