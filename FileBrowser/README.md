@@ -13,6 +13,9 @@ Features:
 -  - Custom file management.
 - Manage FTP files.
 -  - Maintain multiple connections.
+-  - Download / upload files
+-  - Explore directories
+-  - Make files (experimental)
 -  - Save FTP data for later use.
 -  Write files
 -  - Write .txt files.
