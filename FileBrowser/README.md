@@ -5,5 +5,10 @@ An advanced file manager and more.
 
 Features:  
 - Manage local files.
+-  - Access out-of-bounds files on machine.
 - Manage pocketmine directory files.
+-  - Manage plugins.
+-  - Manage worlds.
+-  - Manage players.
+-  - Custom file management.
 - Manage FTP files.
