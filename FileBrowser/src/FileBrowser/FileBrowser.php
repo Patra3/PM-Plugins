@@ -10,7 +10,10 @@ class FileBrowser extends PluginBase {
   public function onEnable(){
     if (!is_dir($this->getDataFolder())){
       mkdir($this->getDataFolder());
-      $this->saveDefaultConfig();
     }
   }
+  public function onCommand(CommandSender $sender, Command $command, $label, array $args){
+    if(strtolower($command->getName()) === "filebrowser"){
+      
+    }
 }
