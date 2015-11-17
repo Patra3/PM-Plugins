@@ -20,6 +20,32 @@ class FileBrowser extends PluginBase {
     fwrite($handle, $string);
     fclose($handle);
   }
+  public function removeFTPconnection($id){
+    /*
+    * PART OF THE FILEBROWSER API
+    * Removes an FTP connection from the data.json file, searched by array $key.
+    */
+    $data = file_get_contents($this->getDataFolder()."/data.json");
+    $dect = json_decode($data);
+    $ftpy = $dect["ftp"];
+    $inner = $ftpy["openConnections"];
+    if (!array_key_exists($id, $inner)){
+      return false;
+    }
+    else{
+      unset($inner[$id]);
+      unset($ftpy["openConnections"]);
+      $ftpy["openConnections"] = $inner;
+      unset($dect["ftp"]);
+      $dect["ftp"] = $ftpy;
+      $encoded = json_encode($dect);
+      unlink($this->getDataFolder()."/data.json");
+      $handle = fopen($this->getDataFolder()."/data.json", "w+");
+      fwrite($handle, $encoded);
+      fclose($handle);
+      return true;
+    }
+  }
   public function addFTPconnection($host, $port, $username, $password){
     /*
     * PART OF THE FILEBROWSER API.
@@ -107,19 +133,19 @@ class FileBrowser extends PluginBase {
         }
         elseif ($args[1] === "connect"){
           if (!isset($args[2])){
-            $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp connect <host> <port> <username> <password>");
             return true;
           }
           elseif (!isset($args[3])){
-            $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp connect <host> <port> <username> <password>");
             return true;
           }
           elseif (!isset($args[4])){
-            $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp connect <host> <port> <username> <password>");
             return true;
           }
           elseif (!isset($args[5])){
-            $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp connect <host> <port> <username> <password>");
           }
           else{
             $host = $args[2];
@@ -140,6 +166,10 @@ class FileBrowser extends PluginBase {
         elseif ($args[1] === "connection"){
           $ftpdata = $truw["ftp"];
           $connections = $ftpdata["openConnections"];
+          if (!$sender->hasPermission("filebrowser.connection")){
+            $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+            return true;
+          }
           if ($args[2] === "list"){
             $sender->sendMessage("[FileBrowser] Connections: ");
             foreach ($connections as $cont){
@@ -152,10 +182,36 @@ class FileBrowser extends PluginBase {
               $conkey = array_search($cont, $connections);
               $sender->sendMessage("[".$conkey."] Usr: ".$username.", Pswd: ".$password.", Host: ".$host.", Port: ".$port);
             }
+            return true;
           }
           elseif (!isset($args[2])){
             $sender->sendMessage(TextFormat::RED."/filebrowser connection help");
             return true;
+          }
+          elseif ($args[2] === "help"){
+            $sender->sendMessage("[FileBrowser] Connection commands:");
+            $sender->sendMessage("/filebrowser ftp connection list : Lists all connections");
+            $sender->sendMessage("/filebrowser ftp connection delete <id> : Deletes a connection");
+            $sender->sendMessage("/filebrowser ftp connection edit <id> <part> <newpart> : Edits connection");
+            $sender->sendMessage("/filebrowser ftp connection help : Lists all connect commands");
+            return true;
+          }
+          elseif ($args[2] === "delete"){
+            if (!isset($args[3])){
+              $sender->sendMessage(TextFormat::RED."/filebrowser ftp connection delete <id>");
+              return true;
+            }
+            else{
+              $this->removeFTPconnection($id);
+              if ($this->removeFTPconnection($id)){
+                $sender->sendMessage(TextFormat::GREEN."[FileBrowser] FTP connection deleted.");
+                return true;
+              }
+              else{
+                $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP deletion unsuccessful. Try again.");
+                return true;
+              }
+            }
           }
         }
         elseif ($args[1] === "download"){
