@@ -14,3 +14,5 @@ Features:
 - Manage FTP files.
 -  - Maintain multiple connections.
 -  - Save FTP data for later use.
+-  Write files
+-  - Write .txt files.
