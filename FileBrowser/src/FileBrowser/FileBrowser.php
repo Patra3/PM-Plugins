@@ -99,7 +99,19 @@ class FileBrowser extends PluginBase {
             $sender->sendMessage(TextFormat::RED."/filebrowser connect <host> <port> <username> <password>");
           }
           else{
+            $host = $args[2];
+            $port = $args[3];
+            $username = $args[4];
+            $password = $args[5];
             $this->addFTPconnection($host, $port, $username, $password);
+            if ($this->addFTPconnection($host, $port, $username, $password)){
+              $sender->sendMessage(TextFormat::GREEN."FTP connection established. /filebrowser ftp help");
+              return true;
+            }
+            else{
+              $sender->sendMessage(TextFormat::RED."FTP connection unsuccessful. Try again.");
+              return true;
+            }
           }
         }
       }
