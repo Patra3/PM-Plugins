@@ -1,1 +1,4 @@
-#
+#AchievementPlus configuration file \ 
+
+#disables built-in PocketMine achievements.
+DisableBuiltInAchievements: false
