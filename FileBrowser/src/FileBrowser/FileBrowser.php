@@ -12,13 +12,28 @@ class FileBrowser extends PluginBase {
   public function onEnable(){
     if (!is_dir($this->getDataFolder())){
       mkdir($this->getDataFolder());
+      mkdir($this->getDataFolder()."/downloads/");
     }
+    $ftpy = array("openConnections" => "none");
     $data = array();
-    $data["ftp"] = array();
+    $data["ftp"] = $ftpy;
     $string = json_encode($data);
     $handle = fopen($this->getDataFolder()."/data.json", "w+");
     fwrite($handle, $string);
     fclose($handle);
+  }
+  public function returnFTPconnectionitems($id){
+    $data = file_get_contents($this->getDataFolder()."/data.json");
+    $dect = json_decode($data);
+    $ftpy = $dect["ftp"];
+    $inner = $ftpy["openConnections"];
+    $access = $inner[$id];
+    if (!isset($inner[$id])){
+      return false;
+    }
+    else{
+      return $access;
+    }
   }
   public function editFTPconnection($id, $option, $newvalue){
     /*
@@ -277,8 +292,37 @@ class FileBrowser extends PluginBase {
             $sender->sendMessage(TextFormat::RED."/filebrowser ftp download <filepath> <connectionid>");
             return true;
           }
+          elseif (!isset($args[3])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp download <filepath> <connectionid>");
+            return true;
+          }
           else{
-            
+            $extension = substr($args[2], -4); //return .ext
+            $id = $args[3];
+            $stf = $this->returnFTPconnectionitems($id);
+            if (!$this->returnFTPconnectionitems($id)){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP id '".$id."' is invalid. Try again.");
+              return true;
+            }
+            else{
+              $connection = $stf["connection"];
+              $username = $stf["username"];
+              $password = $stf["password"];
+              $locale = substr($args[2], 0, -4); //returns file without .ext;
+              $local = $this->getDataFolder()."/downloads/".$locale.$extension;
+              $lgin = ftp_login($connection, $username, $password);
+              
+              if (ftp_get($connection, $local, $args[2], FTP_BINARY)){
+                $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File successfully downloaded, located in datafolder/downloads.");
+                ftp_close($connection);
+                return true;
+              }
+              else{
+                $sender->sendMessage(TextFormat::RED."[FileBrowser] File couldn't be downloaded. Try again.");
+                ftp_close($connection);
+                return true;
+              }
+            }
           }
         }
       }
