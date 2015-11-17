@@ -21,6 +21,10 @@ class FileBrowser extends PluginBase {
     fclose($handle);
   }
   public function addFTPconnection($host, $port, $username, $password){
+    /*
+    * PART OF THE FILEBROWSER API.
+    * Adds an FTP connection to the data.json file.
+    */
     $data = file_get_contents($this->getDataFolder()."/data.json");
     $decd = json_decode($data);
     $ftpy = $decd["ftp"];
@@ -66,19 +70,27 @@ class FileBrowser extends PluginBase {
           return true;
         }
         else{
-          $sender->sendMessage(TextFormat::RED."Access denied!");
+          $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
           return true;
         }
       }
       elseif ($args[0] === "ftp"){
+        if (!$sender->hasPermission("filebrowser.ftp")){
+          $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+          return true;
+        }
         $ftpdata = $truw["ftp"];
         if (!isset($args[1])){
-          if (!isset($ftpdata["openConnections"])){
+          if ($ftpdata["openConnections"] === "none"){
             $sender->sendMessage("[FileBrowser] No active connections exist.");
             return true;
           }
-          elseif ($ftpdata["openConnections"] === "none"){
-            $sender->sendMessage("[FileBrowser] No active connections exist.");
+          else{
+            $livenum = 0;
+            foreach($ftpdata["openConnections"] as $connection){
+              $livenum = $livenum + 1;
+            }
+            $sender->sendMessage("[FileBrowser] There are currently ".$livenum." connections.");
             return true;
           }
         }
@@ -105,11 +117,11 @@ class FileBrowser extends PluginBase {
             $password = $args[5];
             $this->addFTPconnection($host, $port, $username, $password);
             if ($this->addFTPconnection($host, $port, $username, $password)){
-              $sender->sendMessage(TextFormat::GREEN."FTP connection established. /filebrowser ftp help");
+              $sender->sendMessage(TextFormat::GREEN."[FileBrowser] FTP connection established. /filebrowser ftp help");
               return true;
             }
             else{
-              $sender->sendMessage(TextFormat::RED."FTP connection unsuccessful. Try again.");
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP connection unsuccessful. Try again.");
               return true;
             }
           }
