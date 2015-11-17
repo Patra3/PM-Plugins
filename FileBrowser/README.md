@@ -16,3 +16,7 @@ Features:
 -  - Save FTP data for later use.
 -  Write files
 -  - Write .txt files.
+-  Analyze files
+-  - Gets file size
+-  - Gets file mode
+-  - Analyze a directory
