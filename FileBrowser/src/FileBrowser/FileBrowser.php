@@ -251,6 +251,7 @@ class FileBrowser extends PluginBase {
               return true;
             }
             else{
+              $id = $args[2];
               $this->removeFTPconnection($id);
               if ($this->removeFTPconnection($id)){
                 $sender->sendMessage(TextFormat::GREEN."[FileBrowser] FTP connection deleted.");
