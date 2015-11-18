@@ -21,3 +21,12 @@ v1.1 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/TimeZones
 [SUBMITTED]  
 SimpleChat :  
 v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/SimpleChat
+
+---  
+
+<img src="http://fustarbuffet.com/redstonecarrotpe/rsz_folderccon.png" alt="Plugin Icon 85*85" style="width:90px;height:90px">
+[IN DEVELOPMENT]  
+FileBrowser :  
+v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/FileBrowser  
+
+---
