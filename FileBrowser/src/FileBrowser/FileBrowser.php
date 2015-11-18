@@ -112,7 +112,6 @@ class FileBrowser extends PluginBase {
       $kep["password"] = $password;
       $kep["host"] = $host;
       $kep["port"] = $port;
-      $kep["connection"] = $connectd;
       array_push($ftpy["openConnections"], $kep);
       unset($decd["ftp"]);
       $decd["ftp"] = $ftpy;
@@ -131,7 +130,6 @@ class FileBrowser extends PluginBase {
       $kep["password"] = $password;
       $kep["host"] = $host;
       $kep["port"] = $port;
-      $kep["connection"] = $connectd;
       array_push($ftpy["openConnections"], $kep);
       unset($decd["ftp"]);
       $decd["ftp"] = $ftpy;
