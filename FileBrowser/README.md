@@ -1,6 +1,6 @@
 #FileBrowser  
 An advanced file manager and more.  
-
+<img src="http://fustarbuffet.com/redstonecarrotpe/rsz_folderccon.png" alt="Plugin Icon 85*85" style="width:90px;height:90px">  
 ---
 
 Features:  
