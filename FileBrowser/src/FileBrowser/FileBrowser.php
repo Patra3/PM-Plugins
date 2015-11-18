@@ -218,12 +218,11 @@ class FileBrowser extends PluginBase {
           if ($args[2] === "list"){
             $sender->sendMessage("[FileBrowser] Connections: ");
             foreach ($connections as $cont){
-              foreach ($cont as $maps){
-                $username = $maps["username"];
-                $password = $maps["password"];
-                $host = $maps["host"];
-                $port = $maps["port"];
-              }
+              $username = $cont["username"];
+              $password = $cont["password"];
+              $host = $cont["host"];
+              $port = $cont["port"];
+              
               $conkey = array_search($cont, $connections);
               $sender->sendMessage("[".$conkey."] Usr: ".$username.", Pswd: ".$password.", Host: ".$host.", Port: ".$port);
             }
