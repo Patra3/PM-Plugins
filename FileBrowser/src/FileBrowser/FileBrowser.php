@@ -89,7 +89,7 @@ class FileBrowser extends PluginBase {
       return false;
     }
     else{
-      unset($inner[$id]);
+      if (is_array($inner)) unset($inner[$id]);
       if (empty($inner)){
         unset($ftpy["openConnections"]);
         $ftpy["openConnections"] = "none";
