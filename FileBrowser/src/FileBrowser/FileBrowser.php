@@ -216,7 +216,7 @@ class FileBrowser extends PluginBase {
           }
           if ($args[2] === "list"){
             $sender->sendMessage("[FileBrowser] Connections: ");
-            foreach ($ftpdata["openConnections"] as $cont){
+            foreach (($ftpdata["openConnections"])$ftpdata["openConnections"] as $cont){
               $username = $cont["username"];
               $password = $cont["password"];
               $host = $cont["host"];
