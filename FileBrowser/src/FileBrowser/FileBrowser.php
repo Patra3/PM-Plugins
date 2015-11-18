@@ -235,6 +235,7 @@ class FileBrowser extends PluginBase {
             $sender->sendMessage("[FileBrowser] Connections: ");
             if ($ftpdata["openConnections"] === "none"){
               $sender->sendMessage(TextFormat::RED."[FileBrowser] No active connections exist.");
+              return true;
             }
             foreach ($ftpdata["openConnections"] as $cont){
               $username = $cont["username"];
