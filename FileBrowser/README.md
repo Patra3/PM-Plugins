@@ -2,8 +2,9 @@
 An advanced file manager and more.  
 *Note: Do not use, the plugin is not ready for service.*  
 <img src="http://fustarbuffet.com/redstonecarrotpe/rsz_folderccon.png" alt="Plugin Icon 85*85" style="width:90px;height:90px">  
----
+---  
 
+✓ = done  
 Features:  
 - Manage local files.
 -  - Access out-of-bounds files on machine.
@@ -13,11 +14,11 @@ Features:
 -  - Manage players.
 -  - Custom file management.
 - Manage FTP files.
--  - Maintain multiple connections.
--  - Download / upload files
+-  - Maintain multiple connections. ✓  
+-  - Download ✓ / upload files
 -  - Explore directories
 -  - Make files (experimental)
--  - Save FTP data for later use.
+-  - Save FTP data for later use. ✓  
 -  Write files
 -  - Write .txt files.
 -  - Copy / paste files.
