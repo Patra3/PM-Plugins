@@ -327,4 +327,5 @@ class FileBrowser extends PluginBase {
         }
       }
     }
+  }
 }
