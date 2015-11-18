@@ -194,6 +194,10 @@ class FileBrowser extends PluginBase {
           }
         }
         elseif ($args[1] === "connect"){
+          if (!$sender->hasPermission("filebrowser.ftp.commands")){
+            $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+            return true;
+          }
           if (!isset($args[2])){
             $sender->sendMessage(TextFormat::RED."/filebrowser ftp connect <host> <port> <username> <password>");
             return true;
@@ -227,12 +231,16 @@ class FileBrowser extends PluginBase {
         }
         elseif ($args[1] === "connection"){
           $ftpdata = $truw["ftp"];
-          if (!$sender->hasPermission("filebrowser.connection")){
+          if (!$sender->hasPermission("filebrowser.ftp.connection")){
             $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
             return true;
           }
           if ($args[2] === "list"){
             $sender->sendMessage("[FileBrowser] Connections: ");
+            if (!$sender->hasPermission("filebrowser.ftp.connection.list")){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+              return true;
+            }
             if ($ftpdata["openConnections"] === "none"){
               $sender->sendMessage(TextFormat::RED."[FileBrowser] No active connections exist.");
               return true;
@@ -253,6 +261,10 @@ class FileBrowser extends PluginBase {
             return true;
           }
           elseif ($args[2] === "help"){
+            if (!$sender->hasPermission("filebrowser.ftp.connection.help")){
+              $sender->sendMessage("[FileBrowser] Access denied!");
+              return true;
+            }
             $sender->sendMessage("[FileBrowser] Connection commands:");
             $sender->sendMessage("/filebrowser ftp connection list : Lists all connections");
             $sender->sendMessage("/filebrowser ftp connection delete <id> : Deletes a connection");
@@ -261,6 +273,10 @@ class FileBrowser extends PluginBase {
             return true;
           }
           elseif ($args[2] === "delete"){
+            if (!$sender->hasPermission("filebrowser.ftp.connection.delete")){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+              return true;
+            }
             if (!isset($args[3])){
               $sender->sendMessage(TextFormat::RED."/filebrowser ftp connection delete <id>");
               return true;
@@ -279,6 +295,9 @@ class FileBrowser extends PluginBase {
             }
           }
           elseif ($args[2] === "edit"){
+            if (!$sender->hasPermission("filebrowser.ftp.connection.edit")){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+            }
             if (!isset($args[3])){
               $sender->sendMessage(TextFormat::RED."/filebrowser ftp connection edit <id> <type> <newvalue>");
               return true;
@@ -308,6 +327,10 @@ class FileBrowser extends PluginBase {
           }
         }
         elseif ($args[1] === "download"){
+          if (!$sender->hasPermission("filebrowser.ftp.download")){
+            $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+            return true;
+          }
           if (!isset($args[2])){
             $sender->sendMessage(TextFormat::RED."/filebrowser ftp download <filepath> <connectionid>");
             return true;
@@ -348,6 +371,18 @@ class FileBrowser extends PluginBase {
               }
             }
           }
+        }
+        elseif ($args[1] === "help"){
+          if (!$sender->hasPermission("filebrowser.ftp.help")){
+            $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+            return true;
+          }
+          $sender->sendMessage("[FileBrowser] FTP commands:");
+          $sender->sendMessage("/filebrowser ftp connect : Connects to ftp credentials");
+          $sender->sendMessage("/filebrowser ftp connection : Manage your connections");
+          $sender->sendMessage("/filebrowser ftp download : Downloads a file");
+          $sender->sendMessage("/filebrowser ftp upload : Uploads a file");
+          return true;
         }
       }
     }
