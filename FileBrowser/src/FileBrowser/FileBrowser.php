@@ -398,7 +398,7 @@ class FileBrowser extends PluginBase {
             return true;
           }
           else{
-            $id = $args[4];
+            $id = $args[3];
             $stf = $this->returnFTPconnectionitems($id);
             if (!$this->returnFTPconnectionitems($id)){
               $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP id '".$id."' is invalid. Try again.");
