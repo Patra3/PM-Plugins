@@ -124,6 +124,8 @@ class FileBrowser extends PluginBase {
       return true;
     }
     else{
+      unset($ftpy["openConnections"]);
+      $ftpy["openConnections"] = array();
       $kep = array();
       $kep["username"] = $username;
       $kep["password"] = $password;
