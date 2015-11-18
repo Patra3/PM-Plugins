@@ -305,7 +305,7 @@ class FileBrowser extends PluginBase {
               return true;
             }
             else{
-              $connection = $stf["connection"];
+              $connection = ftp_connect($stf["host"], $stf["port"]);
               $username = $stf["username"];
               $password = $stf["password"];
               $locale = substr($args[2], 0, -4); //returns file without .ext;
