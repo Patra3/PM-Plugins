@@ -1,5 +1,6 @@
 #FileBrowser  
 An advanced file manager and more.  
+*Note: Do not use, the plugin is not ready for service.*  
 <img src="http://fustarbuffet.com/redstonecarrotpe/rsz_folderccon.png" alt="Plugin Icon 85*85" style="width:90px;height:90px">  
 ---
 
