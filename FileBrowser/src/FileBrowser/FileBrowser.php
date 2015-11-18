@@ -76,6 +76,7 @@ class FileBrowser extends PluginBase {
     $data = file_get_contents($this->getDataFolder()."/data.json");
     $dect = json_decode($data, true);
     $ftpy = $dect["ftp"];
+    $id = intval($id); 
     $inner = $ftpy["openConnections"];
     /*
     MAP:
