@@ -14,6 +14,9 @@ class FileBrowser extends PluginBase {
       mkdir($this->getDataFolder());
       mkdir($this->getDataFolder()."/downloads/");
     }
+    if (is_file($this->getDataFolder()."/data.json")){
+      return true;
+    }
     $ftpy = array("openConnections" => "none");
     $data = array();
     $data["ftp"] = $ftpy;
@@ -216,6 +219,9 @@ class FileBrowser extends PluginBase {
           }
           if ($args[2] === "list"){
             $sender->sendMessage("[FileBrowser] Connections: ");
+            if ($ftpdata["openConnections"] === "none"){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] No active connections exist.");
+            }
             foreach ($ftpdata["openConnections"] as $cont){
               $username = $cont["username"];
               $password = $cont["password"];
@@ -223,7 +229,7 @@ class FileBrowser extends PluginBase {
               $port = $cont["port"];
               
               $conkey = array_search($cont, $ftpdata["openConnections"]);
-              $sender->sendMessage("[".$conkey."] Usr: ".$username.", Pswd: ".$password.", Host: ".$host.", Port: ".$port);
+              $sender->sendMessage("#".$conkey."# Usr: ".$username.", Pswd: ".$password.", Host: ".$host.", Port: ".$port);
             }
             return true;
           }
