@@ -77,11 +77,16 @@ class FileBrowser extends PluginBase {
     $dect = json_decode($data, true);
     $ftpy = $dect["ftp"];
     $inner = $ftpy["openConnections"];
-    if (!isset($inner[$id])){
+    $outer = array_values($inner);
+    $base = $outer[0];
+    if (!isset($base[$id])){
       return false;
     }
     else{
-      unset($inner[$id]);
+      unset($base[$id]);
+      $prevkey = array_search($inner, $base);
+      unset($inner[$prevkey]);
+      $inner[$prevkey] = $base;
       unset($ftpy["openConnections"]);
       $ftpy["openConnections"] = $inner;
       unset($dect["ftp"]);
