@@ -210,20 +210,19 @@ class FileBrowser extends PluginBase {
         }
         elseif ($args[1] === "connection"){
           $ftpdata = $truw["ftp"];
-          $connections = $ftpdata["openConnections"];
           if (!$sender->hasPermission("filebrowser.connection")){
             $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
             return true;
           }
           if ($args[2] === "list"){
             $sender->sendMessage("[FileBrowser] Connections: ");
-            foreach ($connections as $cont){
+            foreach ($ftpdata["openConnections"] as $cont){
               $username = $cont["username"];
               $password = $cont["password"];
               $host = $cont["host"];
               $port = $cont["port"];
               
-              $conkey = array_search($cont, $connections);
+              $conkey = array_search($cont, $ftpdata["openConnections"]);
               $sender->sendMessage("[".$conkey."] Usr: ".$username.", Pswd: ".$password.", Host: ".$host.", Port: ".$port);
             }
             return true;
