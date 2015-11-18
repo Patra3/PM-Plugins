@@ -24,7 +24,7 @@ class FileBrowser extends PluginBase {
   }
   public function returnFTPconnectionitems($id){
     $data = file_get_contents($this->getDataFolder()."/data.json");
-    $dect = json_decode($data);
+    $dect = json_decode($data, true);
     $ftpy = $dect["ftp"];
     $inner = $ftpy["openConnections"];
     $access = $inner[$id];
@@ -41,7 +41,7 @@ class FileBrowser extends PluginBase {
     * Edits an FTP connection, specifically by id. $newvalue is the new connection value, $option being reference (username).
     */
     $data = file_get_contents($this->getDataFolder()."/data.json");
-    $dect = json_decode($data);
+    $dect = json_decode($data, true);
     $ftpy = $dect["ftp"];
     $inner = $ftpy["openConnections"];
     $access = $inner[$id];
@@ -71,7 +71,7 @@ class FileBrowser extends PluginBase {
     * Removes an FTP connection from the data.json file, searched by array $key.
     */
     $data = file_get_contents($this->getDataFolder()."/data.json");
-    $dect = json_decode($data);
+    $dect = json_decode($data, true);
     $ftpy = $dect["ftp"];
     $inner = $ftpy["openConnections"];
     if (!array_key_exists($id, $inner)){
@@ -97,7 +97,7 @@ class FileBrowser extends PluginBase {
     * Adds an FTP connection to the data.json file.
     */
     $data = file_get_contents($this->getDataFolder()."/data.json");
-    $decd = json_decode($data);
+    $decd = json_decode($data, true);
     $ftpy = $decd["ftp"];
     $connections = $ftpy["openConnections"];
     $connectd = ftp_connect($host, $port);
@@ -145,7 +145,7 @@ class FileBrowser extends PluginBase {
   public function onCommand(CommandSender $sender, Command $command, $label, array $args){
     if(strtolower($command->getName()) === "filebrowser"){
       $data = file_get_contents($this->getDataFolder()."/data.json");
-      $truw = json_decode($data);
+      $truw = json_decode($data, true);
       if (!isset($args[0])){
         if ($sender->hasPermission("filebrowser.main")){
           $sender->sendMessage(TextFormat::RED."/filebrowser help");
