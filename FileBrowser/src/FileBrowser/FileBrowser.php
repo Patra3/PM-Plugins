@@ -77,7 +77,7 @@ class FileBrowser extends PluginBase {
     $dect = json_decode($data, true);
     $ftpy = $dect["ftp"];
     $inner = $ftpy["openConnections"];
-    if (!array_key_exists($id, $inner)){
+    if (!isset($inner[$id])){
       return false;
     }
     else{
