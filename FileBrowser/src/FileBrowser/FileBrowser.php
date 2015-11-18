@@ -394,11 +394,7 @@ class FileBrowser extends PluginBase {
             return true;
           }
           elseif (!isset($args[3])){
-            $sender->sendMessage(TextFormat::RED."/filebrowser ftp upload <filepath> <remotefilepath> <connectionid>");
-            return true;
-          }
-          elseif (!isset($args[4])){
-            $sender->sendMessage(TextFormat::RED."/filebrowser ftp upload <filepath> <remotefilepath> <connectionid>");
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp upload <filepath> <connectionid>");
             return true;
           }
           else{
@@ -413,12 +409,15 @@ class FileBrowser extends PluginBase {
                   $sender->sendMessage(TextFormat::RED."[FileBrowser] Please check your FTP credentials.");
                   return true;
               }
+              $extension = substr($args[2], -4); //return .ext
+              $locale = substr($args[2], 0, -4);
+              $local = "/filebrowser/".$locale.$extension;
               $connection = ftp_connect($stf["host"], $stf["port"]);
               $username = $stf["username"];
               $password = $stf["password"];
               $lgin = ftp_login($connection, $username, $password);
               $handle = fopen($args[2], "r");
-              if (ftp_fput($connection, $args[3], $handle, FTP_ASCII)){
+              if (ftp_fput($connection, $local, $handle, FTP_ASCII)){
                 $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File successfully uploaded.");
                 ftp_close($connection);
                 return true;
