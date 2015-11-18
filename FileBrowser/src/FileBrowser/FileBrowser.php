@@ -53,7 +53,7 @@ class FileBrowser extends PluginBase {
     }
     else{
       unset($access[$option]);
-      $access[$option] = $newoption;
+      $access[$option] = $newvalue;
       unset($inner[$id]);
       $inner[$id] = $access;
       unset($ftpy["openConnections"]);
