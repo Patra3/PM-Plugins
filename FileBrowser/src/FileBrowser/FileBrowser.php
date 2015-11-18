@@ -324,6 +324,10 @@ class FileBrowser extends PluginBase {
               return true;
             }
             else{
+              if (!ftp_connect($stf["host"], $stf["port"])){
+                $sender->sendMessage(TextFormat::RED."[FileBrowser] Please check your FTP credentials.");
+                return true;
+              }
               $connection = ftp_connect($stf["host"], $stf["port"]);
               $username = $stf["username"];
               $password = $stf["password"];
