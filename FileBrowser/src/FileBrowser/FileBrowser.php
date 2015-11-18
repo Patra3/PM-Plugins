@@ -384,6 +384,52 @@ class FileBrowser extends PluginBase {
           $sender->sendMessage("/filebrowser ftp upload : Uploads a file");
           return true;
         }
+        elseif ($args[1] === "upload"){
+          if (!$sender->hasPermission("filebrowser.ftp.upload")){
+            $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+            return true;
+          }
+          if (!isset($args[2])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp upload <filepath> <connectionid>");
+            return true;
+          }
+          elseif (!isset($args[3])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp upload <filepath> <remotefilepath> <connectionid>");
+            return true;
+          }
+          elseif (!isset($args[4])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp upload <filepath> <remotefilepath> <connectionid>");
+            return true;
+          }
+          else{
+            $id = $args[4];
+            $stf = $this->returnFTPconnectionitems($id);
+            if (!$this->returnFTPconnectionitems($id)){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP id '".$id."' is invalid. Try again.");
+              return true;
+            }
+            else{
+              if (!isset($stf["host"])){
+                  $sender->sendMessage(TextFormat::RED."[FileBrowser] Please check your FTP credentials.");
+                  return true;
+              }
+              $connection = ftp_connect($stf["host"], $stf["port"]);
+              $username = $stf["username"];
+              $password = $stf["password"];
+              $lgin = ftp_login($connection, $username, $password);
+              $handle = fopen($args[2], "r");
+              if (ftp_fput($connection, $args[3], $handle, FTP_ASCII)){
+                $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File successfully uploaded.");
+                ftp_close($connection);
+                return true;
+              }
+              else{
+                $sender->sendMessage(TextFormat::RED."[FileBrowser] File couldn't be uploaded. Try again.");
+                return true;
+              }
+            }
+          }
+        }
       }
     }
   }
