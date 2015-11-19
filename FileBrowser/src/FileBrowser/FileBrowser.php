@@ -321,7 +321,11 @@ class FileBrowser extends PluginBase {
             $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
             return true;
           }
-          if ($args[2] === "list"){
+          if (!isset($args[2])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp connection help");
+            return true;
+          }
+          elseif ($args[2] === "list"){
             $sender->sendMessage("[FileBrowser] Connections: ");
             if (!$sender->hasPermission("filebrowser.ftp.connection.list")){
               $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
@@ -340,10 +344,6 @@ class FileBrowser extends PluginBase {
               $conkey = array_search($cont, $ftpdata["openConnections"]);
               $sender->sendMessage("#".$conkey."# Usr: ".$username.", Pswd: ".$password.", Host: ".$host.", Port: ".$port);
             }
-            return true;
-          }
-          elseif (!isset($args[2])){
-            $sender->sendMessage(TextFormat::RED."/filebrowser connection help");
             return true;
           }
           elseif ($args[2] === "help"){
@@ -483,6 +483,10 @@ class FileBrowser extends PluginBase {
             }
             elseif ($this->uploadFTPItem($id, $filepath) === "credentialerror"){
               $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP credentials incorrect. Try again.");
+              return true;
+            }
+            elseif ($this->uploadFTPItem($id, $filepath) === "invalidID"){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP ID '".$id."' does not exist. Try again.");
               return true;
             }
             else{
