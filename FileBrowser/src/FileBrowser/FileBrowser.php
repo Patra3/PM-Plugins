@@ -478,6 +478,7 @@ class FileBrowser extends PluginBase {
           }
           else{
             $id = $args[3];
+            $filepath = $args[2];
             if ($this->uploadFTPItem($id, $filepath)){
               $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File sucessfully uploaded.");
               return true;
