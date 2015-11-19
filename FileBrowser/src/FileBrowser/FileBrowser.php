@@ -87,7 +87,7 @@ class FileBrowser extends PluginBase {
       return "credentialerror";
     }
     $extension = substr($filepath, -4); //return .ext
-    $locale = substr($filepath, 0, -4);
+    $locale = strrchr($filepath, "/");
     $local = "/filebrowser/".$locale.$extension;
     $connection = ftp_connect($stf["host"], $stf["port"]);
     $username = $stf["username"];
@@ -145,7 +145,7 @@ class FileBrowser extends PluginBase {
       $connection = ftp_connect($stf["host"], $stf["port"]);
       $username = $stf["username"];
       $password = $stf["password"];
-      $locale = substr($filepath, 0, -4); //returns file without .ext;
+      $locale = strrchr($filepath, "/"); //returns file without .ext;
       $local = $ddirectory.$locale.$extension;
       $lgin = ftp_login($connection, $username, $password);
               
