@@ -416,8 +416,11 @@ class FileBrowser extends PluginBase {
               $username = $stf["username"];
               $password = $stf["password"];
               $lgin = ftp_login($connection, $username, $password);
-              $handle = fopen($args[2], "r");
-              if (ftp_fput($connection, $local, $handle, FTP_ASCII)){
+              $handle = $args[2];
+              if (!ftp_size($connection, "/filebrowser/")){
+                ftp_mkdir($connection, "/filebrowser/");
+              }
+              if (ftp_put($connection, $local, $handle, FTP_ASCII)){
                 $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File successfully uploaded.");
                 ftp_close($connection);
                 return true;
