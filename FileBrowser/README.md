@@ -13,6 +13,7 @@ Features:
 -  - Manage worlds.
 -  - Manage players.
 -  - Custom file management.
+-  - Delete all CrashLogs, instantly.
 - Manage FTP files.  ✓
 -  - Maintain multiple connections. ✓  
 -  - Download ✓ / upload files ✓  
