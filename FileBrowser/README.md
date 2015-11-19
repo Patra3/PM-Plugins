@@ -28,4 +28,4 @@ Features:
 -  - Analyze a directory
 -  Flexible API  
 -  - Access most features listed.
--  - Easy function calls :P
+-  - Easy function calls :P ✓  
