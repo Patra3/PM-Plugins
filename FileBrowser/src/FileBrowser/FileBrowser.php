@@ -26,6 +26,12 @@ class FileBrowser extends PluginBase {
     fclose($handle);
   }
   public function returnFTPconnectionitems($id){
+    /*
+    * PART OF THE ADVANCED FILEBROWSER API.
+    * Do not use this function if you don't know what you're doing.
+    *
+    * Retrieves and returns an $array of credential $id.
+    */
     $data = file_get_contents($this->getDataFolder()."/data.json");
     $dect = json_decode($data, true);
     $ftpy = $dect["ftp"];
@@ -66,6 +72,37 @@ class FileBrowser extends PluginBase {
       fwrite($handle, $enc);
       fclose($handle);
       return true;
+    }
+  }
+  public function downloadFTPItem($ddirectory, $id, $filepath){
+    /*
+    * PART OF THE FILEBROWSER API
+    * Downloads a file from ftp $id with name $filepath, and stores at directory $ddirectory.
+    */
+    $extension = substr($filepath, -4); //return .ext
+    $stf = $this->returnFTPconnectionitems($id);
+    if (!$this->returnFTPconnectionitems($id)){
+      return "invalidID";
+    }
+    else{
+      if (!isset($stf["host"])){
+        return "credentialerror";
+      }
+      $connection = ftp_connect($stf["host"], $stf["port"]);
+      $username = $stf["username"];
+      $password = $stf["password"];
+      $locale = substr($filepath, 0, -4); //returns file without .ext;
+      $local = $ddirectory.$locale.$extension;
+      $lgin = ftp_login($connection, $username, $password);
+              
+      if (ftp_get($connection, $local, $filepath, FTP_BINARY)){
+        ftp_close($connection);
+        return true;
+      }
+      else{
+        ftp_close($connection);
+        return true;
+      }
     }
   }
   public function removeFTPconnection($id){
@@ -340,35 +377,26 @@ class FileBrowser extends PluginBase {
             return true;
           }
           else{
-            $extension = substr($args[2], -4); //return .ext
+            $ddirectory = $this->getDataFolder()."/downloads/";
             $id = $args[3];
-            $stf = $this->returnFTPconnectionitems($id);
-            if (!$this->returnFTPconnectionitems($id)){
-              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP id '".$id."' is invalid. Try again.");
+            $filepath = $args[2];
+            if ($this->downloadFTPItem($ddirectory, $id, $filepath)){
+              $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File downloaded successfully.");
+              return true;
+            }
+            elseif ($this->downloadFTPItem($ddirectory, $id, $filepath) === "invalidID"){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP ID '".$id."' does not exist.");
+              return true;
+            }
+            elseif ($this->downloadFTPItem($ddirectory, $id, $filepath) === "credentialerror"){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP credentials incorrect. Try again.");
               return true;
             }
             else{
-              if (!isset($stf["host"])){
-                $sender->sendMessage(TextFormat::RED."[FileBrowser] Please check your FTP credentials.");
-                return true;
-              }
-              $connection = ftp_connect($stf["host"], $stf["port"]);
-              $username = $stf["username"];
-              $password = $stf["password"];
-              $locale = substr($args[2], 0, -4); //returns file without .ext;
-              $local = $this->getDataFolder()."/downloads/".$locale.$extension;
-              $lgin = ftp_login($connection, $username, $password);
-              
-              if (ftp_get($connection, $local, $args[2], FTP_BINARY)){
-                $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File successfully downloaded, located in datafolder/downloads.");
-                ftp_close($connection);
-                return true;
-              }
-              else{
-                $sender->sendMessage(TextFormat::RED."[FileBrowser] File couldn't be downloaded. Try again.");
-                ftp_close($connection);
-                return true;
-              }
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] An unknown error has occured, error logged to console
+              ."." Try again.");
+              var_dump($this->downloadFTPItem($ddirectory, $id, $filepath));
+              return true;
             }
           }
         }
