@@ -1,5 +1,5 @@
 # PM-Plugins
-A collection of my PocketMine plugins.    
+A collection of my PocketMine plugins.     
 
 ---  
 
