@@ -5,7 +5,6 @@ namespace FileBrowser;
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\Server;
 use pocketmine\permission\Permissible;
 use pocketmine\utils\TextFormat;
 
@@ -526,15 +525,6 @@ class FileBrowser extends PluginBase {
             }
           }
         }
-      }
-    }
-    elseif(strtolower($command->getName()) === "reload"){
-      if($sender->hasPermission("filebrowser.reload")){
-        $plugin = $this->getServer()->getPluginManager()->getPlugin("FileBrowser");
-        $this->getServer()->getPluginManager()->disablePlugin($plugin);
-        $this->getServer()->getPluginManager()->enablePlugin($plugin);
-        return true;
-        break;
       }
     }
   }
