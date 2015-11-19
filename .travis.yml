@@ -2,4 +2,4 @@ language: php
 php:
 - 5.4
 before_script: wget -q -O - http://get.pocketmine.net/ | bash
-before_script: ./start.sh
+script: ./start.sh
