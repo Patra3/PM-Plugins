@@ -460,6 +460,7 @@ class FileBrowser extends PluginBase {
           $sender->sendMessage("/filebrowser ftp connection : Manage your connections");
           $sender->sendMessage("/filebrowser ftp download : Downloads a file");
           $sender->sendMessage("/filebrowser ftp upload : Uploads a file");
+          $sender->sendMessage("/filebrowser ftp explore : Explores FTP directory.");
           return true;
         }
         elseif ($args[1] === "upload"){
@@ -509,6 +510,7 @@ class FileBrowser extends PluginBase {
           }
           else{
             $directory = $args[3];
+            $id = $args[2];
             $dirarr = $this->exploreFTPdirectory($directory, $id);
             if (!$this->exploreFTPdirectory($directory, $id)){
               $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP exploration unsuccessful. Try again.");
@@ -523,6 +525,14 @@ class FileBrowser extends PluginBase {
             }
           }
         }
+      }
+    }
+    elseif(strtolower($command->getName()) === "reload"){
+      if($sender->hasPermission("filebrowser.reload")){
+        $plugin = $this->getServer()->getPluginManager()->getPlugin("FileBrowser");
+        $this->getServer()->getPluginManager()->disablePlugin($plugin);
+        $this->getServer()->getPluginManager()->enablePlugin($plugin);
+        return true;
       }
     }
   }
