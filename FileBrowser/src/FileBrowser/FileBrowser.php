@@ -98,7 +98,6 @@ class FileBrowser extends PluginBase {
       return true;
     }
     else{
-      $sender->sendMessage(TextFormat::RED."[FileBrowser] File couldn't be uploaded. Try again.");
       return false;
     }
   }
