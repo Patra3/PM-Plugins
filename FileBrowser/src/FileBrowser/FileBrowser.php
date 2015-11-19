@@ -533,6 +533,7 @@ class FileBrowser extends PluginBase {
         $this->getServer()->getPluginManager()->disablePlugin($plugin);
         $this->getServer()->getPluginManager()->enablePlugin($plugin);
         return true;
+        break;
       }
     }
   }
