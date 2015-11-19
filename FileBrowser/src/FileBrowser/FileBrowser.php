@@ -74,6 +74,34 @@ class FileBrowser extends PluginBase {
       return true;
     }
   }
+  public function uploadFTPItem($id, $filepath){
+    /*
+    * PART OF THE FILEBROWSER API
+    * Uploads a file to ftp $id with name $filepath in the folder /filebrowser/.
+    */
+    $stf = $this->returnFTPconnectionitems($id);
+    if (!isset($stf["host"])){
+      return "credentialerror";
+    }
+    $extension = substr($filepath, -4); //return .ext
+    $locale = substr($filepath, 0, -4);
+    $local = "/filebrowser/".$locale.$extension;
+    $connection = ftp_connect($stf["host"], $stf["port"]);
+    $username = $stf["username"];
+    $password = $stf["password"];
+    $lgin = ftp_login($connection, $username, $password);
+    if (!ftp_size($connection, "/filebrowser/")){
+      ftp_mkdir($connection, "/filebrowser/");
+    }
+    if (ftp_put($connection, $local, $filepath, FTP_ASCII)){
+      ftp_close($connection);
+      return true;
+    }
+    else{
+      $sender->sendMessage(TextFormat::RED."[FileBrowser] File couldn't be uploaded. Try again.");
+      return false;
+    }
+  }
   public function downloadFTPItem($ddirectory, $id, $filepath){
     /*
     * PART OF THE FILEBROWSER API
@@ -427,36 +455,17 @@ class FileBrowser extends PluginBase {
           }
           else{
             $id = $args[3];
-            $stf = $this->returnFTPconnectionitems($id);
-            if (!$this->returnFTPconnectionitems($id)){
-              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP id '".$id."' is invalid. Try again.");
+            if ($this->uploadFTPItem($id, $filepath)){
+              $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File sucessfully uploaded.");
+              return true;
+            }
+            elseif ($this->uploadFTPItem($id, $filepath) === "credentialerror"){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP credentials incorrect. Try again.");
               return true;
             }
             else{
-              if (!isset($stf["host"])){
-                  $sender->sendMessage(TextFormat::RED."[FileBrowser] Please check your FTP credentials.");
-                  return true;
-              }
-              $extension = substr($args[2], -4); //return .ext
-              $locale = substr($args[2], 0, -4);
-              $local = "/filebrowser/".$locale.$extension;
-              $connection = ftp_connect($stf["host"], $stf["port"]);
-              $username = $stf["username"];
-              $password = $stf["password"];
-              $lgin = ftp_login($connection, $username, $password);
-              $handle = $args[2];
-              if (!ftp_size($connection, "/filebrowser/")){
-                ftp_mkdir($connection, "/filebrowser/");
-              }
-              if (ftp_put($connection, $local, $handle, FTP_ASCII)){
-                $sender->sendMessage(TextFormat::GREEN."[FileBrowser] File successfully uploaded.");
-                ftp_close($connection);
-                return true;
-              }
-              else{
-                $sender->sendMessage(TextFormat::RED."[FileBrowser] File couldn't be uploaded. Try again.");
-                return true;
-              }
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] File upload unsuccessful. Try again.");
+              return true;
             }
           }
         }
