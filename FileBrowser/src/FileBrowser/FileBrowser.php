@@ -86,6 +86,9 @@ class FileBrowser extends PluginBase {
     if (!isset($stf["host"])){
       return "credentialerror";
     }
+    if (!is_file($filepath)){
+      return "filenotfound";
+    }
     $extension = substr($filepath, -4); //return .ext
     $locale = strrchr($filepath, "/");
     $local = "/filebrowser/".$locale.$extension;
@@ -155,7 +158,7 @@ class FileBrowser extends PluginBase {
       }
       else{
         ftp_close($connection);
-        return true;
+        return false;
       }
     }
   }
@@ -489,6 +492,10 @@ class FileBrowser extends PluginBase {
             }
             elseif ($this->uploadFTPItem($id, $filepath) === "invalidID"){
               $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP ID '".$id."' does not exist. Try again.");
+              return true;
+            }
+            elseif ($this->uploadFTPItem($id, $filepath) === "filenotfound"){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] File cannot be found. Try again.");
               return true;
             }
             else{
