@@ -5,6 +5,7 @@ namespace FileBrowser;
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\Server;
 use pocketmine\permission\Permissible;
 use pocketmine\utils\TextFormat;
 
