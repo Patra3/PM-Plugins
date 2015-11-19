@@ -16,9 +16,9 @@ Features:
 - Manage FTP files.
 -  - Maintain multiple connections. ✓  
 -  - Download ✓ / upload files ✓  
--  - Explore directories
--  - Make files (experimental)
+-  - Explore directories  
 -  - Save FTP data for later use. ✓  
+-  - Easily manage FTP data. ✓  
 -  Write files
 -  - Write .txt files.
 -  - Copy / paste files.
@@ -26,3 +26,6 @@ Features:
 -  - Gets file size
 -  - Gets file mode
 -  - Analyze a directory
+-  Flexible API  
+-  - Access most features listed.
+-  - Easy function calls :P
