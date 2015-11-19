@@ -13,10 +13,10 @@ Features:
 -  - Manage worlds.
 -  - Manage players.
 -  - Custom file management.
-- Manage FTP files.
+- Manage FTP files.  ✓
 -  - Maintain multiple connections. ✓  
 -  - Download ✓ / upload files ✓  
--  - Explore directories  
+-  - Explore directories  ✓   
 -  - Save FTP data for later use. ✓  
 -  - Easily manage FTP data. ✓  
 -  Write files
