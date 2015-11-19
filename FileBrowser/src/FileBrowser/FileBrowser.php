@@ -80,6 +80,9 @@ class FileBrowser extends PluginBase {
     * Uploads a file to ftp $id with name $filepath in the folder /filebrowser/.
     */
     $stf = $this->returnFTPconnectionitems($id);
+    if (!$this->returnFTPconnectionitems($id)){
+      return "invalidID";
+    }
     if (!isset($stf["host"])){
       return "credentialerror";
     }
@@ -96,6 +99,30 @@ class FileBrowser extends PluginBase {
     if (ftp_put($connection, $local, $filepath, FTP_ASCII)){
       ftp_close($connection);
       return true;
+    }
+    else{
+      return false;
+    }
+  }
+  public function exploreFTPdirectory($directory, $id){
+    /*
+    * PART OF THE MORE ADVANCED FILEBROWSER API
+    * Gets the array with files inside $directory of FTP $id.
+    */
+    $stf = $this->returnFTPconnectionitems($id);
+    if (!$this->returnFTPconnectionitems($id)){
+      return "invalidID";
+    }
+    if (!isset($stf["host"])){
+      return "credentialerror";
+    }
+    $connection = ftp_connect($stf["host"], $stf["port"]);
+    $username = $stf["username"];
+    $password = $stf["password"];
+    $lgin = ftp_login($connection, $username, $password);
+    $esst = ftp_nlist($connection, $directory);
+    if (ftp_nlist($connection, $directory)){
+      return $esst;
     }
     else{
       return false;
@@ -237,6 +264,11 @@ class FileBrowser extends PluginBase {
           return true;
         }
       }
+      elseif ($args[0] === "help"){
+        $sender->sendMessage("[FileBrowser] Main commands:");
+        $sender->sendMessage("/filebrowser help : Get help commands.");
+        $sender->sendMessage("/filebrowser ftp : Access FileBrowserFTP.");
+      }
       elseif ($args[0] === "ftp"){
         if (!$sender->hasPermission("filebrowser.ftp")){
           $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
@@ -244,18 +276,8 @@ class FileBrowser extends PluginBase {
         }
         $ftpdata = $truw["ftp"];
         if (!isset($args[1])){
-          if ($ftpdata["openConnections"] === "none"){
-            $sender->sendMessage("[FileBrowser] No active connections exist.");
-            return true;
-          }
-          else{
-            $livenum = 0;
-            foreach($ftpdata["openConnections"] as $connection){
-              $livenum = $livenum + 1;
-            }
-            $sender->sendMessage("[FileBrowser] There are currently ".$livenum." connections.");
-            return true;
-          }
+          $sender->sendMessage(TextFormat::RED."/filebrowser ftp help");
+          return true;
         }
         elseif ($args[1] === "connect"){
           if (!$sender->hasPermission("filebrowser.ftp.commands")){
@@ -433,6 +455,7 @@ class FileBrowser extends PluginBase {
             return true;
           }
           $sender->sendMessage("[FileBrowser] FTP commands:");
+          $sender->sendMessage("/filebrowser ftp help : Get help commands");
           $sender->sendMessage("/filebrowser ftp connect : Connects to ftp credentials");
           $sender->sendMessage("/filebrowser ftp connection : Manage your connections");
           $sender->sendMessage("/filebrowser ftp download : Downloads a file");
@@ -464,6 +487,34 @@ class FileBrowser extends PluginBase {
             }
             else{
               $sender->sendMessage(TextFormat::RED."[FileBrowser] File upload unsuccessful. Try again.");
+              return true;
+            }
+          }
+        }
+        elseif ($args[1] === "explore"){
+          if (!$sender->hasPermission("filebrowser.ftp.explore")){
+            $sender->sendMessage(TextFormat::RED."[FileBrowser] Access denied!");
+            return true;
+          }
+          elseif (!isset($args[2])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp explore <id> <directory>");
+            return true;
+          }
+          elseif (!isset($args[3])){
+            $sender->sendMessage(TextFormat::RED."/filebrowser ftp explore <id> <directory>");
+          }
+          else{
+            $directory = $args[3];
+            $dirarr = $this->exploreFTPdirectory($directory, $id);
+            if (!$this->exploreFTPdirectory($directory, $id)){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] FTP exploration unsuccessful. Try again.");
+              return true;
+            }
+            else{
+              $sender->sendMessage("[FileBrowser] Files in directory '".$directory."':");
+              foreach($dirarr as $files){
+                $sender->sendMessage($files);
+              }
               return true;
             }
           }
