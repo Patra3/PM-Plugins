@@ -26,6 +26,6 @@ Features:
 -  - Gets file size
 -  - Gets file mode
 -  - Analyze a directory
--  Flexible API  
--  - Access most features listed.
+-  Flexible API  ✓  
+-  - Access most features listed. ✓  
 -  - Easy function calls :P ✓  
