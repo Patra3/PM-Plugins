@@ -52,6 +52,7 @@ class FileBrowser extends PluginBase {
     * Removes a plugin, only use the full plugin name as the .phar file, pass through $pluginname.
     * Note: This uses raw file technology, not pocketmine api related content.
     */
+    $pluginmk = dirname(dirname(dirname(dirname(__FILE__)))); //hack :p
     $dyf = scandir($pluginmk);
     foreach($dyf as $name){
       $removename = chop($name, $args[2]);
