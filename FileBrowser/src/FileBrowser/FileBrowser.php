@@ -278,13 +278,12 @@ class FileBrowser extends PluginBase {
           return true;
         }
         elseif ($args[1] === "list"){
-          $server = $this->getServer();
-          $commandMap = new SimpleCommandMap($server);
-          $pluginmanager = new PluginManager($server, $commandMap);
-          $plugins = $pluginmanager->getPlugins();
-          $sender->sendMessage("Loaded plugins:");
-          foreach($plugins as $ytu){
-            $sender->sendMessage($ytu);
+          $dirplg = scandir("/plugins/");
+          foreach($dirplg as $plugin){
+            $exten = substr($plugin, -4);
+            if ($exten === "phar"){
+              $sender->sendMessage($plugin);
+            }
           }
           return true;
         }
