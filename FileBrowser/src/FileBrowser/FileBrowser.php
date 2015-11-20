@@ -277,7 +277,7 @@ class FileBrowser extends PluginBase {
           return true;
         }
         elseif ($args[1] === "list"){
-          $plugins = $this->getPlugins();
+          $plugins = PluginManager::getPlugins();
           $sender->sendMessage("Loaded plugins:");
           foreach($plugins as $ytu){
             $sender->sendMessage($ytu);
