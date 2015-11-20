@@ -6,7 +6,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
 use pocketmine\command\SimpleCommandMap;
 use pocketmine\command\CommandSender;
-use pocketmine\plugin\PluginManager;
+use pocketmine\plugin\PluginDescription;
 use pocketmine\permission\Permissible;
 use pocketmine\utils\TextFormat;
 
@@ -44,6 +44,39 @@ class FileBrowser extends PluginBase {
     }
     else{
       return $access;
+    }
+  }
+  public function removePlugind($pluginname){
+    /*
+    * PART OF THE FILEBROWSER API
+    * Removes a plugin, only use the full plugin name as the .phar file, pass through $pluginname.
+    * Note: This uses raw file technology, not pocketmine api related content.
+    */
+    $dyf = scandir($pluginmk);
+    foreach($dyf as $name){
+      $removename = chop($name, $args[2]);
+      if (!chop($name, $args[2])){
+        return "invalidname";
+      }
+      $removever = chop($removename, ".phar");
+      if ($removever === ""){
+        if (unlink($pluginmk."/".$args[2].".phar")){
+          return true;
+        }
+        else{
+          return false;
+        }
+      }
+      else{
+        $finalpopr = chop($name, $args[2]);
+        $version = chop($finalpopr, ".phar");
+        if (unlink($pluginmk."/".$args[2]."_".$version.".phar")){
+          return true;
+        }
+        else{
+          return false;
+        }
+      }
     }
   }
   public function editFTPconnection($id, $option, $newvalue){
@@ -273,13 +306,13 @@ class FileBrowser extends PluginBase {
         $sender->sendMessage("/filebrowser ftp : Access FileBrowserFTP.");
       }
       elseif ($args[0] === "plugins"){
+        $pluginmk = dirname(dirname(dirname(dirname(__FILE__)))); //hack :p
         if (!isset($args[1])){
           $sender->sendMessage("/filebrowser plugins help");
           return true;
         }
         elseif ($args[1] === "list"){
           $sender->sendMessage("Plugins:");
-          $pluginmk = dirname(dirname(dirname(dirname(__FILE__)))); //hack :P
           $dirplg = scandir($pluginmk);
           foreach($dirplg as $plugin){
             $pusw = pathinfo($plugin, PATHINFO_EXTENSION);
@@ -288,6 +321,27 @@ class FileBrowser extends PluginBase {
             }
           }
           return true;
+        }
+        elseif ($args[1] === "delete"){
+          if (!isset($args[2])){
+            $sender->sendMessage("/filebrowser plugins delete <pluginname>");
+            return true;
+          }
+          else{
+            $pluginname = $args[2];
+            if ($this->removePlugind($pluginname)){
+              $sender->sendMessage(TextFormat::GREEN."[FileBrowser] Plugin successfully deleted.");
+              return true;
+            }
+            elseif ($this->removePlugind($pluginname) === "invalidname"){
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] Invalid plugin. Try again.");
+              return true;
+            }
+            else{
+              $sender->sendMessage(TextFormat::RED."[FileBrowser] Plugin deletion unsuccessful. Try again.");
+              return true;
+            }
+          }
         }
       }
       elseif ($args[0] === "ftp"){
