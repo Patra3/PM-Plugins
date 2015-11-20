@@ -278,11 +278,13 @@ class FileBrowser extends PluginBase {
           return true;
         }
         elseif ($args[1] === "list"){
-          $dirplg = scandir("/plugins/");
+          $sender->sendMessage("Plugins:");
+          $pluginmk = dirname(dirname(dirname(dirname(__FILE__)))); //hack :P
+          $dirplg = scandir($pluginmk);
           foreach($dirplg as $plugin){
-            $exten = substr($plugin, -4);
-            if ($exten === "phar"){
-              $sender->sendMessage($plugin);
+            $pusw = pathinfo($plugin, PATHINFO_EXTENSION);
+            if ($pusw === "phar"){
+               $sender->sendMessage($plugin);
             }
           }
           return true;
