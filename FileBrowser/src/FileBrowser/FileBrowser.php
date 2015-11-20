@@ -4,6 +4,7 @@ namespace FileBrowser;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
+use pocketmine\command\SimpleCommandMap;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginManager;
 use pocketmine\permission\Permissible;
@@ -277,7 +278,10 @@ class FileBrowser extends PluginBase {
           return true;
         }
         elseif ($args[1] === "list"){
-          $plugins = PluginManager::getPlugins();
+          $server = $this->getServer();
+          $commandMap = new SimpleCommandMap($server);
+          $pluginmanager = new PluginManager($server, $commandMap);
+          $plugins = $pluginmanager->getPlugins();
           $sender->sendMessage("Loaded plugins:");
           foreach($plugins as $ytu){
             $sender->sendMessage($ytu);
