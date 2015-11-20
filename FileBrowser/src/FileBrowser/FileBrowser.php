@@ -55,13 +55,13 @@ class FileBrowser extends PluginBase {
     $pluginmk = dirname(dirname(dirname(dirname(__FILE__)))); //hack :p
     $dyf = scandir($pluginmk);
     foreach($dyf as $name){
-      $removename = chop($name, $args[2]);
-      if (!chop($name, $args[2])){
+      $removename = chop($name, $pluginname);
+      if (!chop($name, $pluginname)){
         return "invalidname";
       }
       $removever = chop($removename, ".phar");
       if ($removever === ""){
-        if (unlink($pluginmk."/".$args[2].".phar")){
+        if (unlink($pluginmk."/".$pluginname.".phar")){
           return true;
         }
         else{
@@ -69,9 +69,9 @@ class FileBrowser extends PluginBase {
         }
       }
       else{
-        $finalpopr = chop($name, $args[2]);
+        $finalpopr = chop($name, $pluginname);
         $version = chop($finalpopr, ".phar");
-        if (unlink($pluginmk."/".$args[2]."_".$version.".phar")){
+        if (unlink($pluginmk."/".$pluginname."_".$version.".phar")){
           return true;
         }
         else{
