@@ -5,6 +5,7 @@ namespace FileBrowser;
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\plugin\PluginManager;
 use pocketmine\permission\Permissible;
 use pocketmine\utils\TextFormat;
 
@@ -269,6 +270,20 @@ class FileBrowser extends PluginBase {
         $sender->sendMessage("[FileBrowser] Main commands:");
         $sender->sendMessage("/filebrowser help : Get help commands.");
         $sender->sendMessage("/filebrowser ftp : Access FileBrowserFTP.");
+      }
+      elseif ($args[0] === "plugins"){
+        if (!isset($args[1])){
+          $sender->sendMessage("/filebrowser plugins help");
+          return true;
+        }
+        elseif ($args[1] === "list"){
+          $plugins = $this->getPlugins();
+          $sender->sendMessage("Loaded plugins:");
+          foreach($plugins as $ytu){
+            $sender->sendMessage($ytu);
+          }
+          return true;
+        }
       }
       elseif ($args[0] === "ftp"){
         if (!$sender->hasPermission("filebrowser.ftp")){
