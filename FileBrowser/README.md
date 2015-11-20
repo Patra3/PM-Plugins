@@ -14,6 +14,7 @@ Features:
 -  - Manage players.
 -  - Custom file management.
 -  - Delete all CrashLogs, instantly.
+-  - Clean junk instantly.  
 - Manage FTP files.  ✓
 -  - Maintain multiple connections. ✓  
 -  - Download ✓ / upload files ✓  
