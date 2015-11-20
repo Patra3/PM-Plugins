@@ -11,21 +11,9 @@ use pocketmine\Server;
   //$
 //}
 
-class BetaPort extends QueryRegenerateEvent{
+class BetaPort extends PluginBase{
   public function onEnable(){
-    $server = $this->getServer();
-    var_dump($server);
-    //$yy = new QueryRegenerateEvent(Server $server, $timeout = 5);
-    /*
-    runkit_method_redefine(
-      'Server',
-      'getVersion',
-      '',
-      'return "v0.13.0 alpha";',
-      RUNKIT_ACC_PUBLIC
-    );*/
-    $yy->version = "v0.13.0 alpha";
-    
+    \pocketmine\MINECRAFT_VERSION = "v0.13.0 alpha";
     $this->getLogger()->info("BetaPort was successful!");
   }
 }
