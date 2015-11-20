@@ -14,7 +14,8 @@ use pocketmine\Server;
 class BetaPort extends QueryRegenerateEvent{
   public function onEnable(){
     $server = $this->getServer();
-    $yy = new QueryRegenerateEvent(Server $server, $timeout = 5);
+    var_dump($server);
+    //$yy = new QueryRegenerateEvent(Server $server, $timeout = 5);
     /*
     runkit_method_redefine(
       'Server',
