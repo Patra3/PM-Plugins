@@ -4,10 +4,10 @@ namespace FileBrowser;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
-use pocketmine\command\SimpleCommandMap;
+//use pocketmine\command\SimpleCommandMap;
 use pocketmine\command\CommandSender;
-use pocketmine\plugin\PluginDescription;
-use pocketmine\permission\Permissible;
+//use pocketmine\plugin\PluginDescription;
+//use pocketmine\permission\Permissible;
 use pocketmine\utils\TextFormat;
 
 class FileBrowser extends PluginBase {
@@ -125,13 +125,13 @@ class FileBrowser extends PluginBase {
     if (!is_file($filepath)){
       return false;
     }
-    $extension = substr($filepath, -4); //return .ext
-    $locale = strrchr($filepath, "/");
+    $extension = pathinfo($filepath, PATHINFO_EXTENSION); //return .ext
+    $locale = chop($filepath, $extension);
     $local = "/filebrowser/".$locale.$extension;
     $connection = ftp_connect($stf["host"], $stf["port"]);
     $username = $stf["username"];
     $password = $stf["password"];
-    $lgin = ftp_login($connection, $username, $password);
+    ftp_login($connection, $username, $password);
     if (!ftp_size($connection, "/filebrowser/")){
       ftp_mkdir($connection, "/filebrowser/");
     }
@@ -158,7 +158,7 @@ class FileBrowser extends PluginBase {
     $connection = ftp_connect($stf["host"], $stf["port"]);
     $username = $stf["username"];
     $password = $stf["password"];
-    $lgin = ftp_login($connection, $username, $password);
+    ftp_login($connection, $username, $password);
     $esst = ftp_nlist($connection, $directory);
     if (ftp_nlist($connection, $directory)){
       return $esst;
@@ -172,7 +172,7 @@ class FileBrowser extends PluginBase {
     * PART OF THE FILEBROWSER API
     * Downloads a file from ftp $id with name $filepath, and stores at directory $ddirectory.
     */
-    $extension = substr($filepath, -4); //return .ext
+    $extension = pathinfo($filepath, PATHINFO_EXTENSION); //return .ext
     $stf = $this->returnFTPconnectionitems($id);
     if (!$this->returnFTPconnectionitems($id)){
       return "invalidID";
@@ -184,9 +184,9 @@ class FileBrowser extends PluginBase {
       $connection = ftp_connect($stf["host"], $stf["port"]);
       $username = $stf["username"];
       $password = $stf["password"];
-      $locale = strrchr($filepath, "/"); //returns file without .ext;
+      $locale = chop($filepath, $extension); //returns file without .ext;
       $local = $ddirectory.$locale.$extension;
-      $lgin = ftp_login($connection, $username, $password);
+      ftp_login($connection, $username, $password);
               
       if (ftp_get($connection, $local, $filepath, FTP_BINARY)){
         ftp_close($connection);
@@ -247,7 +247,7 @@ class FileBrowser extends PluginBase {
     $decd = json_decode($data, true);
     $ftpy = $decd["ftp"];
     $connections = $ftpy["openConnections"];
-    $connectd = ftp_connect($host, $port);
+    ftp_connect($host, $port);
     if (!ftp_connect($host, $port)){
       return false;
     }
