@@ -97,6 +97,10 @@ class Annihilator extends PluginBase implements Listener {
     $pr = $event->getEntity();
     $pln = $pr->getPlayer()->getName();
     $cc = $pr->getLastDamageCause();
+    if (!isset($cc)){
+      $this->getLogger()->info("hi");
+      return true;
+    }
     $ps = $cc->getDamager();
     if (!($ps instanceof Player)){
       return true;
