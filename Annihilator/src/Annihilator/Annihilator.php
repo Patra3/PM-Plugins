@@ -7,8 +7,12 @@ use pocketmine\utils\TextFormat;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\item;
 use pocketmine\Player;
 use pocketmine\event\Listener;
+
+$killer = array();
+$arrowtimeshot = array();
 
 class Annihilator extends PluginBase implements Listener {
   /*
@@ -17,15 +21,11 @@ class Annihilator extends PluginBase implements Listener {
   
   A copy of the license is available in the LICENSE.txt file.
   */
-  
-  public $killers;
-  
   public function onEnable(){
     if (!is_dir($this->getDataFolder())){
       mkdir($this->getDataFolder());
     }
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
-    $killer = array();
   }
   public function addKillPoint($name){
     if (!is_file($name.".json")){
@@ -86,6 +86,21 @@ class Annihilator extends PluginBase implements Listener {
     $handle = fopen($name.".json", "w+");
     fwrite($handle, $encode);
     fclose($handle);
+    $player = $this->getServer()->getPlayer($name);
+    $bow = new Bow(0, 1);
+    $player->getInventory()->addItem($bow);
+    $arrowtimeshot[$name] = 3;
+    return true;
+  }
+  public function onBowShoot(EntityShootBowEvent $event){
+    $player = $event->getEntity()->getName();
+    $data = file_get_contents($player.".json");
+    $decode = json_decode($data, true);
+    if ($decode["annihilator"] === "yes"){
+      $event->setForce(100);
+      $arrowtimeshot[$player] = intval($arrowtimeshot[$player]) - 1;
+      return true;
+    }
   }
   public function onHurtf(EntityDamageEvent $event){
     //$cause = $event->getCause();
@@ -113,6 +128,7 @@ class Annihilator extends PluginBase implements Listener {
     $damager = $event->getDamager();
     $ent = $event->getEntity()->getName();
     $killer[$damager] = $ent;
+    return true;
   }
   public function onDeath(PlayerDeathEvent $event){
     $pr = $event->getEntity();
