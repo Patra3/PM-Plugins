@@ -6,6 +6,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\Player;
 use pocketmine\event\Listener;
 
 class Annihilator extends PluginBase implements Listener {
@@ -82,24 +84,27 @@ class Annihilator extends PluginBase implements Listener {
     fclose($handle);
   }
   public function onHurtf(EntityDamageEvent $event){
-    $cause = $event->getCause();
+    //$cause = $event->getCause();
     $pr = $event->getEntity();
-    //$cc = $cause->getDamager();
-    //DEBUG
-    var_dump($cc);
-    var_dump($cs);
-    var_dump($pr);
-    var_dump($cause);
-    
+    if ($event instanceof EntityDamageByEntityEvent){
+      $dam = $event->getDamager();
+      if ($dam instanceof Player){
+        $ms = $dam->getName();
+        $hhd = file_get_contents($ms.".json");
+        $dec = json_decode($hhd, true);
+        if (isset($decode["annihilator"])){
+          if ($decode["annihilator"] === "yes"){
+            $event->setDamage(PHP_INT_MAX);
+            return true;
+          }
+        }
+      }
+    }
   }
   public function onDeath(PlayerDeathEvent $event){
     $pr = $event->getEntity();
     $pln = $pr->getPlayer()->getName();
     $cc = $pr->getLastDamageCause();
-    if (!isset($cc)){
-      $this->getLogger()->info("hi");
-      return true;
-    }
     $ps = $cc->getDamager();
     if (!($ps instanceof Player)){
       return true;
