@@ -4,6 +4,8 @@ namespace Annihilator;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
+use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 
 class Annihilator extends PluginBase implements Listener {
