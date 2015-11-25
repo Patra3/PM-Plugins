@@ -84,8 +84,7 @@ class Annihilator extends PluginBase implements Listener {
   public function onHurtf(EntityDamageEvent $event){
     $cause = $event->getCause();
     $pr = $event->getEntity();
-    $cs = $pr->getLastDamageCause();
-    $cc = $cs->getDamager();
+    //$cc = $cause->getDamager();
     //DEBUG
     var_dump($cc);
     var_dump($cs);
