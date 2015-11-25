@@ -102,6 +102,19 @@ class Annihilator extends PluginBase implements Listener {
       return true;
     }
   }
+  public function onHold(PlayerItemHeldEvent $event){
+    $item = $event->getItem();
+    $player = $event->getPlayer();
+    if ($item instanceof Bow){
+      $data = file_get_contents($player->getName().".json");
+      $decode = json_decode($data, true);
+      if ($decode["annihilator"] != "yes"){
+        return true;
+      }
+      $sender->sendMessage(TextFormat::BLUE.">> ".TextFormat::RED."Annihilator ".TextFormat::BLUE." <<");
+      return true;
+    }
+  }
   public function onHurtf(EntityDamageEvent $event){
     //$cause = $event->getCause();
     
