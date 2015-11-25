@@ -17,11 +17,15 @@ class Annihilator extends PluginBase implements Listener {
   
   A copy of the license is available in the LICENSE.txt file.
   */
+  
+  public $killers;
+  
   public function onEnable(){
     if (!is_dir($this->getDataFolder())){
       mkdir($this->getDataFolder());
     }
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
+    $killer = array();
   }
   public function addKillPoint($name){
     if (!is_file($name.".json")){
@@ -105,11 +109,16 @@ class Annihilator extends PluginBase implements Listener {
       }
     }
   }
+  public function onEntityEntity(EntityDamageByEntityEvent $event){
+    $damager = $event->getDamager();
+    $ent = $event->getEntity()->getName();
+    $killer[$damager] = $ent;
+  }
   public function onDeath(PlayerDeathEvent $event){
     $pr = $event->getEntity();
-    $pln = $pr->getPlayer()->getName();
+    $pln = $pr->getName();
     $cc = $pr->getLastDamageCause();
-    $ps = $cc->getDamager();
+    $ps = array_search($pln, $killer);
     if (!($ps instanceof Player)){
       return true;
     }
