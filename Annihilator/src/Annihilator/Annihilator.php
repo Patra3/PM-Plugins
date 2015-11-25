@@ -85,11 +85,15 @@ class Annihilator extends PluginBase implements Listener {
   }
   public function onHurtf(EntityDamageEvent $event){
     //$cause = $event->getCause();
+    
     $pr = $event->getEntity();
     if ($event instanceof EntityDamageByEntityEvent){
       $dam = $event->getDamager();
       if ($dam instanceof Player){
         $ms = $dam->getName();
+        if (!is_file($ms.".json")){
+          return true;
+        }
         $hhd = file_get_contents($ms.".json");
         $dec = json_decode($hhd, true);
         if (isset($decode["annihilator"])){
