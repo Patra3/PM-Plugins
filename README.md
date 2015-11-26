@@ -11,7 +11,7 @@ v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/HalloweenPM
 
 <img src="http://fustarbuffet.com/redstonecarrotpe/unnamed.jpg" alt="Plugin Icon 85*85" style="width:90px;height:90px">  
 [RELEASED]  
-TimeZones :  
+TimeZones (request):  
 v1.1 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/TimeZones  
 
 ---
@@ -29,4 +29,10 @@ v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/SimpleChat
 FileBrowser :  
 v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/FileBrowser  
 
----
+---  
+
+[IN DEVELOPMENT]
+Annihilator (request):  
+v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/Annihilator  
+
+---  
