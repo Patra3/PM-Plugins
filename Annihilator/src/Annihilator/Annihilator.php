@@ -10,6 +10,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\item\Bow;
+use pocketmine\entity\Arrow;
 use pocketmine\item\Item;
 use pocketmine\Player;
 use pocketmine\event\Listener;
@@ -35,8 +36,8 @@ class Annihilator extends PluginBase implements Listener {
     if (is_file($this->getDataFolder()."/tempsave.json")){
         $this->getLogger()->info("Picking up last save data...");
         $data = file_get_contents($this->getDataFolder()."/tempsave.json");
-        $this->arrowtimeshot = json_decode($data, true);
     }
+    $this->activearrows = array();
   }
   public function addKillPoint($name){
     if (!is_file($this->getDataFolder().$name.".json")){
@@ -122,7 +123,9 @@ class Annihilator extends PluginBase implements Listener {
   public function onBowShoot(EntityShootBowEvent $event){
     $player = $event->getEntity()->getName();
     $ps = $event->getEntity();
-    
+    if (!is_file($this->getDataFolder().$player.".json")){
+        return true;
+    }
     $data = file_get_contents($this->getDataFolder().$player.".json");
     $decode = json_decode($data, true);
     if (!isset($decode["annihilator"])){
@@ -162,12 +165,39 @@ class Annihilator extends PluginBase implements Listener {
   }
   public function onHurtf(EntityDamageEvent $event){
     //$cause = $event->getCause();
-    
+    //arrow check for the catchy phrase thing :PPP
+      
+    $causet = $event->getCause();
+    if ($causet === 2){
+        $arrowed = true;
+    }
+    else{
+        $arrowed = false;
+    }
     $pr = $event->getEntity();
     $cause = $pr->getLastDamageCause();
     if ($cause instanceof EntityDamageByEntityEvent){
       $dam = $event->getDamager()->getName();
       $ent = $event->getEntity()->getPlayer()->getName();
+      
+      if ($arrowed){
+          if (!is_file($this->getDataFolder().$dam.".json")){
+              return true;
+          }
+          $file = file_get_contents($this->getDataFolder().$dam.".json");
+          $decode = json_decode($file, true);
+          if (isset($decode["annihilator"]) and $decode["annihilator"] === "yes"){
+              $nt = $event->getEntity()->getPlayer();
+              $event->setDamage(0);
+              $spawn = $nt->getSpawn();
+              $nt->teleport($spawn, $nt->getYaw(), $nt->getPitch());
+              $this->getServer()->getPlayer($ent)->sendMessage("One-shot, one kill! You didn't even see that coming!");
+              return true;
+          }
+          else{
+              return true;
+          }
+      }
       $this->killer[$dam] = strval($ent);
       
       if ($dam instanceof Player){
@@ -184,12 +214,18 @@ class Annihilator extends PluginBase implements Listener {
           }
         }
       }
+      if ($dam instanceof Arrow){
+          $this->getLogger()->info("yeah!");
+      }
     }
   }
   public function onDeath(PlayerDeathEvent $event){
     $pr = $event->getEntity();
     $pln = $pr->getName();
     //$cc = $pr->getLastDamageCause();
+    if ($this->killer === NULL){
+        return true;
+    }
     $ps = array_search($pln, $this->killer);
     $lss = $this->getServer()->getPlayer($ps);
     if (!($lss instanceof Player)){
