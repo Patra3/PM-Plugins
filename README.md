@@ -31,7 +31,7 @@ v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/FileBrowser
 
 ---  
 
-[IN DEVELOPMENT]  
+[COMPLETED]  
 Annihilator (request):  
 v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/Annihilator  
 
