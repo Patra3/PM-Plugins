@@ -31,6 +31,7 @@ v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/FileBrowser
 
 ---  
 
+<img src="http://fustarbuffet.com/redstonecarrotpe/bowarrow.png" alt="Plugin Icon 85*85" style="width:90px;height:90px">  
 [COMPLETED]  
 Annihilator (request):  
 v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/Annihilator  
