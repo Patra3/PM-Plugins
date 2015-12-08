@@ -1,0 +1,7 @@
+#ServerAuthPlus configuration file..
+
+chatauthenticate: on
+#authenticate in the chat, similar to the extension SimpleAuthHelper.
+
+limitchars: on
+#Strictly limit passwords to 0-9, a-z, A-Z.
