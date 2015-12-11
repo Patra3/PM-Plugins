@@ -30,3 +30,15 @@ Annihilator (request):
 v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/Annihilator  
 
 ---  
+
+[IN DEVELOPMENT]  
+FancyTag :  
+v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/FancyTag  
+
+---  
+
+[IN DEVELOPMENT]  
+ServerAuthPlus :  
+v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/ServerAuthPlus   
+
+---  
