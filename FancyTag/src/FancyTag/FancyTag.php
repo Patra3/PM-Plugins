@@ -5,6 +5,8 @@ namespace FancyTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\Player;
+use pocketmine\command\Command;
+use pocketmine\command\CommandSender;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use FancyTag\TagRenew;
