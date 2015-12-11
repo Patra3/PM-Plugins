@@ -11,7 +11,7 @@ class TagRenew extends PluginTask {
         $this->start = true;
         parent::__construct();
     }
-    public function run($ticks){
+    public function onRun($ticks){
         if ($this->start){
             $this->plugin->updateAllPlayers();
         }
