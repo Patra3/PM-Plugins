@@ -1,0 +1,29 @@
+#FancyTag configuration file for version 1.0.0
+
+defaulttagstyle:
+- "HealthTag"
+- "ItemTag"
+- "ChatTag"
+- "WorldTag"
+- "PositionTag"
+- "VoteStatusTag"
+
+#Turn attributes on or off.
+HealthTag:
+- "on" # HealthTag enabled or disabled? [options: on/off]
+- "bars" # Set the display format [options: bars, numbers]
+ItemTag:
+- "on" # ItemTag enabled or disabled? [options: on/off]
+ChatTag:
+- "on" # ChatTag enabled or disabled? [options: on/off]
+- "3" # Seconds ChatTag will keep message.
+- "..." # ChatTag idle display.
+WorldTag:
+- "on" # WorldTag enabled or disabled? [options: on/off]
+PositionTag:
+- "on" # PositionTag enabled or disabled? [options: on/off]
+VoteStatusTag:
+- "on" # VoteStatusTag enabled or disabled? [options: on/off]
+- "yourserverkey" # Enter your server key here, must be valid.
+NameTag:
+- "on" # Regular username tag on? [options: on/off]
