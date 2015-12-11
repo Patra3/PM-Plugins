@@ -1,4 +1,4 @@
 #FancyTag  
 Easily create stylish nametags.  
 
-Currently broken, please do not use.
+Currently broken, please do not use yet.
