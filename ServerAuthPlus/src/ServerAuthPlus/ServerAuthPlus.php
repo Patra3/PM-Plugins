@@ -13,6 +13,7 @@ class ServerAuthPlus extends PluginBase {
     
     private $temp_nametags = array();
     private $makeup = array();
+    private $emailreg = array("players" => array());
     
     public function onEnable(){
         if (ServerAuth::VERSION != "2.11"){
@@ -24,6 +25,12 @@ class ServerAuthPlus extends PluginBase {
         if (!is_dir($this->getDataFolder())){
             mkdir($this->getDataFolder());
             $this->saveDefaultConfig();
+        }
+        if ($this->getConfig()->get("emailauth") === "on"){
+            $this->emailreg["active"] = true;
+        }
+        else{
+            $this->emailreg["active"] = false;
         }
     }
     public function onJoin(){
@@ -48,13 +55,40 @@ class ServerAuthPlus extends PluginBase {
                 return true;
             }
             else {
+                unlink($this->makeup[array_search($event->getPlayer()->getName(), $this->makeup)]);
                 return true;
             }
+        }
+        if ($this->emailreg["active"]){
+            array_push($this->emailreg["players"], $event->getPlayer()->getName());
+            $event->getPlayer()->sendMessage("One more step! Please enter your email.");
+            return true;
         }
     }
     public function onChat(PlayerChatEvent $event){
         if (in_array($event->getPlayer()->getName(), $this->makeup)){
             $result = ServerAuth::getAPI()->registerPlayer($event->getPlayer(), $event->getMessage());
+        }
+        if (in_array($event->getPlayer->getName(), $this->emailreg["players"])){
+            if (!strstr($event->getMessage(), "@")){
+                $sender->sendMessage("That is not a valid email address. Please try again.");
+                $event->setCancelled();
+                return true;
+            }
+            else{
+                $sender->sendMessage("Thank you. You may now login.");
+                foreach ($this->getConfig()->get("emailauthcontent") as $strmsg){
+                    $finalmsg = "";
+                    $finalmsg = $finalmsg.$strmsg.\n;
+                }
+                $finalmsg = str_replace("{player}", $event->getPlayer()->getName(), $finalmsg);
+                $rs = mail($event->getMessage(), "Registration", $finalmsg);
+                if (!$rs){
+                    $this->getLogger()->warning("Registration email sending to ".$event->getMessage()." failed.");
+                }
+                $event->setCancelled();
+                return true;
+            }
         }
         if (!ServerAuth::getAPI()->isPlayerAuthenticated($event->getPlayer())){
             if ($this->getConfig()->get("chatauthenticate") === "on"){
