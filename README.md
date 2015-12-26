@@ -42,3 +42,9 @@ ServerAuthPlus :
 v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/ServerAuthPlus   
 
 ---  
+
+[FINISHED]  
+TapCommand :  
+v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/TapCommand    
+
+---  

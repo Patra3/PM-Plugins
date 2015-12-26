@@ -49,6 +49,7 @@ class SurvivalGames extends PluginBase implements Listener {
             // ugh disgusting...
             if ($event->getMessage() === "#help"){
                 $player->sendMessage("#create : Create a new survival games instance.");
+                $player->sendMessage("#addnewplayerspawn <id> : Adds a new survival game spawn.");
             }
             elseif ($event->getMessage() === "#create"){
                 $instance = json_decode(file_get_contents($this->getDataFolder()."/data.json"), true);
@@ -62,7 +63,26 @@ class SurvivalGames extends PluginBase implements Listener {
                 fclose($ahdn);
             }
             elseif (strpos($event->getMessage(), "#addnewplayerspawn")){
-                
+                $thing = str_replace("#addnewplayerspawn", "", $event->getMessage()); //should return the round id.
+                if (!is_numeric($thing){
+                    $player->sendMessage("The survival game ID,".$thing.", is invalid.");
+                }
+                else{
+                    $instance = json_decode(file_get_contents($this->getDataFolder()."/data.json"), true);
+                    $pos = $player->getPosition();
+                    foreach ($instance["games"] as $gamearray){
+                        if ($gamearray["id"] == $thing){
+                            array_push($gamearray["spawns"], array("x" => $pos->x, "y" => $pos->y, "z" => $pos->z));
+                            $player->sendMessage("A new spawn at ".$pos->x,", ".$pos->y.", ".$pos->z." was added to game ID ".$thing.".");
+                        }
+                    }
+                }
+            }
+            elseif ($event->getMessage() === "#list"){
+                $instance = json_decode(file_get_contents($this->getDataFolder()."/data.json"), true);
+                foreach($instance["games"] as $game){
+                    
+                }
             }
         }
     }
