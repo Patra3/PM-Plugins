@@ -24,6 +24,11 @@ class TapCommand extends PluginBase implements Listener{
     }
     public function onCommand(CommandSender $sender, Command $command, $label, array $args){
         if ($command->getName() === "tc"){
+            if (!isset($args[0])){
+                $sender->sendMessage("/tc add <command> : Add command to a block.");
+                $sender->sendMessage("/tc delete : Deletes commands from block.");
+                return true;
+            }
             if ($args[0] === "add"){
                 if (!isset($args[1])){
                     $sender->sendMessage("/tc add <command>");
@@ -33,7 +38,7 @@ class TapCommand extends PluginBase implements Listener{
                     $moved_args = array();
                     foreach($args as $argss){
                         if ($argss != $args[0] or $args[1]){
-                            array_push($moved_args, $args);
+                            array_push($moved_args, $argss);
                         }
                     }
                     $command = implode(" ", $moved_args);
