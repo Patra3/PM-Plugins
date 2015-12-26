@@ -29,7 +29,7 @@ class TapCommand extends PluginBase implements Listener{
                 $sender->sendMessage("/tc delete : Deletes commands from block.");
                 return true;
             }
-            if ($args[0] === "add"){
+            elseif ($args[0] === "add"){
                 if (!isset($args[1])){
                     $sender->sendMessage("/tc add <command>");
                     return true;
@@ -37,10 +37,9 @@ class TapCommand extends PluginBase implements Listener{
                 else{
                     $moved_args = array();
                     foreach($args as $argss){
-                        if ($argss != $args[0] or $args[1]){
-                            array_push($moved_args, $argss);
-                        }
+                        array_push($moved_args, $argss);
                     }
+                    unset($moved_args[array_search("add", $moved_args)]);
                     $command = implode(" ", $moved_args);
                     array_push($this->tapwait, array("plyr" => $sender->getName(), "command" => $command));
                     $sender->sendMessage("Tap on the block to add the command to..");
