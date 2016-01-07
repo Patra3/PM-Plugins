@@ -1,13 +1,11 @@
 name: TimeZones
 main: TimeZones\TimeZones
-version: 1.1
-api: 1.0.0
-description: A commision plugin for time plugin.
-#View more here: https://forums.pocketmine.net/threads/time-zones.7624/
-author: HotFireyDeath
+version: 3.0
+api: 1.13.0
+author: HotFireyDeath/Chopstick Software
 
 commands:
- tz:
-  description: "Shows the current time"
-  usage: "/time"
-  permission: TimeZones.time
+    tz:
+        description: TimeZones command.
+        usage: /tz
+        permission: timezones.main

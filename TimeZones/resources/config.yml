@@ -1,18 +1,6 @@
-Corrector: 2
+#TimeZones configuration file.
+timezone: EST
 
-#Colors are currently as stated:
-    #Blue
-    #Red
-    #Green
-    #Aqua
-    #Yellow
-    #White
-    #Gray
-    #Purple
-    #Black
-    #Plain
-    
-    #please spell them as-is for functionality to work.
-    
-    
-Color: Blue
+color: blue
+# Full list of supported colors available here:
+# http://minecraft.gamepedia.com/Formatting_codes
