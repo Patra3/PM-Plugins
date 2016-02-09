@@ -1,7 +1,0 @@
-#ChatUtils configuration file.
-
-tag: on
-#Allows tagging other users in posts.
-
-id: on
-#Allows post labeling by ID.
