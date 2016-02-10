@@ -1,0 +1,10 @@
+name: ImporterPM
+main: ImporterPM\ImporterPM
+version: 1.0.0
+api: [1.13.0, 1.0.0]
+
+commands:
+    importer:
+        description: ImporterPM main command.
+        usage: /importer
+        permission: importerpm.main
