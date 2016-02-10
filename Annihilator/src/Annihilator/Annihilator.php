@@ -63,12 +63,7 @@ class Annihilator extends PluginBase implements Listener {
   public function checkEg($name){
     $data = file_get_contents($this->getDataFolder().$name.".json");
     $decode = json_decode($data, true);
-    if (intval($decode["kills"]) === 7){
-      return true;
-    }
-    else{
-      return false;
-    }
+    return intval($decode["kills"]) === 7 ? true : false
   }
   public function resetKillPoint($name){
     if (!is_file($this->getDataFolder().$name.".json")){
@@ -92,7 +87,8 @@ class Annihilator extends PluginBase implements Listener {
     }
   }
   public function annihilator($name){
-    $this->getServer()->getPlayer($name)->sendMessage("You have obtained the >>Annihilator<<!");
+    $player = $this->getServer()->getPlayer($name);
+    $player->sendMessage("You have obtained the >>Annihilator<<!");
     $data = file_get_contents($this->getDataFolder().$name.".json");
     $decode = json_decode($data, true);
     $decode["annihilator"] = "yes";
@@ -101,7 +97,6 @@ class Annihilator extends PluginBase implements Listener {
     $handle = fopen($this->getDataFolder().$name.".json", "w+");
     fwrite($handle, $encode);
     fclose($handle);
-    $player = $this->getServer()->getPlayer($name);
     $player->getInventory()->addItem($this->bow); //bow
     $player->getInventory()->addItem(Item::get(262, 0, 3)); //arrow
     $this->arrowtimeshot[$name] = 3;
@@ -168,12 +163,7 @@ class Annihilator extends PluginBase implements Listener {
     //arrow check for the catchy phrase thing :PPP
       
     $causet = $event->getCause();
-    if ($causet === 2){
-        $arrowed = true;
-    }
-    else{
-        $arrowed = false;
-    }
+    $arrowed = $causet === 2 ? true : false
     $pr = $event->getEntity();
     $cause = $pr->getLastDamageCause();
     if ($cause instanceof EntityDamageByEntityEvent){
