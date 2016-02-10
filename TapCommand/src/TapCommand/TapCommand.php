@@ -94,7 +94,6 @@ class TapCommand extends PluginBase implements Listener{
         foreach($data as $blockar){ 
             if ($blockar["x"] == $block->getX() and $blockar["y"] == $block->getY() and $blockar["z"] == $block->getZ()){
                 $this->getServer()->dispatchCommand($event->getPlayer(), $blockar["command"]);
-                return true;
             }
         }
     }
