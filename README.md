@@ -37,8 +37,9 @@ v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/TapCommand
 
 ---  
 
+<img src="http://fustarbuffet.com/hotfireydeath/plugin-images/sheep_fix.png" alt="Plugin Icon 85*85" style="width:90px;height:90px">  
 [FINISHED, UNTESTED]  
-ImporterPM :  
-v1.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/ImporterPM  
+SheepFix :  
+v1.0.0 : https://github.com/HotFireyDeath/PM-Plugins/tree/master/SheepFix  
 
 ---  
