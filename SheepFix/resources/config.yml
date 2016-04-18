@@ -1,0 +1,4 @@
+#SheepFix configuration (v1.0.0)
+
+cooldown: 40
+#Number of seconds after shearing before you can shear again.
