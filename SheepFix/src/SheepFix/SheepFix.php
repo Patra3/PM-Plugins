@@ -63,7 +63,7 @@ class SheepFix extends PluginBase implements Listener {
                     if ($itemf === Item::SHEARS){
                         $event_is = true;
                         $d->getInventory()->addItem(new ItemBlock(new Wool(), 0, rand(1, 3)));
-                        array_push(self::$cooldown, new CooldownClass($sheep, $this->getConfig()->get("cooldown")));
+                        array_push($this->cooldown, new CooldownClass($sheep, $this->getConfig()->get("cooldown")));
                     }
                 }
             }
