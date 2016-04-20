@@ -15,11 +15,26 @@ use pocketmine\entity\Sheep;
 use pocketmine\block\Wool;
 use SheepFix\CooldownTask;
 
+class CooldownClass {
+    
+    public $sheep;
+    public $seconds;
+    
+    public function __construct($sheep, $seconds){
+        $this->sheep = $sheep;
+        $this->seconds = $seconds;
+    }
+    public function updateSeconds($new_seconds){
+        $this->seconds = $new_seconds;
+    }
+}
+
 class SheepFix extends PluginBase implements Listener {
     
-    public static $cooldown = array();
+    public $cooldown;
     
     public function onEnable(){
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
         if(!is_dir($this->getDataFolder())){
             mkdir($this->getDataFolder());
             $this->saveDefaultConfig();
@@ -34,6 +49,7 @@ class SheepFix extends PluginBase implements Listener {
         }
     }
     public function onDamage(EntityDamageEvent $event){
+        $event_is = false;
         $c = $event->getEntity()->getLastDamageCause(); //sheep's last dmg cause
         $sheep = $event->getEntity();
         if ($this->isSheepInCooldown($sheep)){
@@ -45,23 +61,18 @@ class SheepFix extends PluginBase implements Listener {
                 if ($d instanceof Player){
                     $itemf = $d->getInventory()->getItemInHand()->getId();
                     if ($itemf === Item::SHEARS){
+                        $event_is = true;
                         $d->getInventory()->addItem(new ItemBlock(new Wool(), 0, rand(1, 3)));
-                        array_push(self::$cooldown, array($sheep, $this->getConfig()->get("cooldown")));
-                        $event->setCancelled();
+                        array_push(self::$cooldown, new CooldownClass($sheep, $this->getConfig()->get("cooldown")));
                     }
                 }
             }
         }
-    }
-    private function isSheepInCooldown($entity){
-        foreach(self::$cooldown as $arra){
-            if ($arra[0] === $entity){
-                return true;
-            }
+        if ($event_is){
+            $event->setCancelled();
         }
-        return false;
     }
     public function setCooldownArray($array){
-        self::$cooldown = $array;
+        $this->cooldown = $array;
     }
 }
