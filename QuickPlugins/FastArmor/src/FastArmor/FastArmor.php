@@ -45,18 +45,22 @@ class FastArmor extends PluginBase implements Listener {
             if (in_array($event->getItem()->getId(), $this->helms)){
                 // Is helmet.
                 $event->getPlayer()->getInventory()->setHelmet($event->getItem());
+                $event->getPlayer()->getInventory()->remove($event->getItem());
             }
             elseif (in_array($event->getItem()->getId(), $this->chestplates)){
                 // Is chestplate.
                 $event->getPlayer()->getInventory()->setChestplate($event->getItem());
+                $event->getPlayer()->getInventory()->remove($event->getItem());
             }
             elseif (in_array($event->getItem()->getId(), $this->leggings)){
                 // Is leggings.
                 $event->getPlayer()->getInventory()->setLeggings($event->getItem());
+                $event->getPlayer()->getInventory()->remove($event->getItem());
             }
             elseif (in_array($event->getItem()->getId(), $this->boots)){
                 // Is boots.
                 $event->getPlayer()->getInventory()->setBoots($event->getItem());
+                $event->getPlayer()->getInventory()->remove($event->getItem());
             }
         }
     }
