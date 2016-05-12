@@ -1,0 +1,55 @@
+# PushbulletPM configuration v1.0.0
+
+access_token: false
+# Enter your account access token here. Remember, this is the account
+# that will be used to send pushes through.
+
+allow_pushbullet_notifications: true
+#Allow players to automatically register for Pushbullet notifications of your server.
+
+server_open:
+    notify: true
+    #Sends a Pushbullet notification when the server opens.
+    details:
+        title: Server is online!
+        #Notification title
+        message: Hi, this is a Pushbullet notification to notify you that your server is now online!
+        #Notification message
+        send_to: default
+        #send notifications to...
+        #Set to 'default' for the default registered account.
+        #Set to [] list for multiple account notifications.
+server_close:
+    notify: true
+    #Sends a Pushbullet notification when the server closes.
+    details:
+        title: Server went offline :(
+        #Notification title
+        message: Hi, this is a Pushbullet notification to notify you that your server went offline.
+        #Notification messaeg
+        send_to: default
+        #send notifications to...
+        #Set to 'default' for the default registered account.
+        #Set to [] list for multiple account notifications.
+player_join:
+    notify: true
+    #Sends a Pushbullet notification to you when a certain player joins.
+    player_notifications: [
+        "Steve",
+        "Alex"
+        ]
+    send_to: default
+    #send notifications to...
+    #Set to 'default' for the default registered account.
+    #Set to [] list for multiple account notifications.
+player_disconnects:
+    notify: true
+    #Sends a Pushbullet notification to you when a certain player joins.
+    player_notifications: [
+        "Steve",
+        "Alex"
+        ]
+    send_to: default
+    #send notifications to...
+    #Set to 'default' for the default registered account.
+    #Set to [] list for multiple account notifications.
