@@ -8,11 +8,77 @@ use pocketmine\utils\Utils;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\scheduler\AsyncTask;
+
+class PushTask extends AsyncTask {
+    
+    private $plugin;
+    private $token;
+    private $mode;
+    
+    public function __construct($plugin, $token, $mode = "send"){
+        /**
+         * Currently, this task can be recycled for repeated use.
+         * As well, the $mode is currently only available as send.
+         * More modes will be added as needed.
+         * */
+        $this->plugin = $plugin;
+        $this->token = $token;
+        $this->mode = $mode;
+    }
+    public function setTitle($title){
+        $this->title = $title;
+    }
+    public function setBody($body){
+        $this->body = $body;
+    }
+    public function setRecipients($r){
+        $this->recipients = $r;
+    }
+    public function onRun(){
+        if ($this->mode === "send"){
+            if (is_array($this->recipients)){
+                foreach($this->recipients as $emails){
+                    Utils::postURL(
+                        $this->url,
+                        array(
+                            "type" => "sendPush",
+                            "data" => json_encode(
+                                array(
+                                    "access_token" => $this->token,
+                                    "title" => $this->title,
+                                    "body" => $this->body,
+                                    "reciever" => $emails
+                                    ))
+                            )
+                        );
+                }
+            }
+            else{
+                Utils::postURL(
+                    $this->url,
+                    array(
+                        "type" => "sendPush",
+                        "data" => json_encode(array(
+                            "access_token" => $this->token,
+                            "title" => $this->title,
+                            "body" => $this->body,
+                            "reciever" => $this->recipients
+                            ))
+                        )
+                    );
+            }
+        }
+        $this->plugin->getLogger()->info(TextFormat::GREEN."Pushed to Pushbullet!");
+    }
+}
 
 class PushbulletPM extends PluginBase implements Listener {
     
-    const VERSION = "1.0.0";
+    const VERSION = "1.1.0";
     public $url; //Server url
+    public $api;
+    private $token;
     
     public function getPushbulletUser($token){
         /**
@@ -43,23 +109,16 @@ class PushbulletPM extends PluginBase implements Listener {
          * @param $token User api token
          * @return Push object
          * */
-        return Utils::postURL(
-            $this->url,
-            array(
-                "type" => "sendPush",
-                "data" => json_encode(
-                    array(
-                        "access_token" => $token,
-                        "title" => $title,
-                        "message" => $message,
-                        "reciever" => $reciever
-                        )
-                    )
-                )
-            );
+        $this->api->setTitle($title);
+        $this->api->setBody($message);
+        $this->api->setRecipients($reciever);
+        $this->api->run();
     }
     public function onEnable(){
+        
+        $this->token = null;
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        
         if (!is_dir($this->getDataFolder())){
             mkdir($this->getDataFolder());
             $this->saveDefaultConfig();
@@ -91,11 +150,14 @@ class PushbulletPM extends PluginBase implements Listener {
                 $this->getLogger()->info("Verification credentials: ");
                 $this->getLogger()->info("Name: ".$data["name"]);
                 $this->getLogger()->info("Email: ".$data["email"]);
+                $this->token = $this->getConfig()->get("access_token");
             }
         }
         elseif ($data["error"]["code"] === "invalid_access_token"){
             $this->getLogger()->info(TextFormat::RED."Uh oh, that account is invalid. Please check 'access_token'.");
         }
+        $this->api = new PushTask($this, $this->token, "send");
+        
         $o = $this->getConfig()->get("server_open")["details"];
         if ($this->getConfig()->get("server_open")["notify"]){
             if (!is_array($o["send_to"])){
