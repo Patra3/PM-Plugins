@@ -16,7 +16,7 @@ https://www.youtube.com/watch?v=JzkbQYnhj-s&feature=youtu.be
 
 ### For Developers:  
 Now, I know you are likely anxious to get your hands on this for push notifications.  
-Luckily, I made two (currently) unique methods you can call.  
+Luckily, I made three (currently) unique methods you can call.  
 
 In the core of my plugin, you can use sendPush(), with the following parameters:  
 token key, title, message, recieving user email  
@@ -32,11 +32,13 @@ token key
 $pushbulletclass->getPushbulletUser($client_api_key);
 ```  
 
-Be wary, the second method returns a user object directly from Pushbullet servers.
+Be wary, the second method returns a user object directly from Pushbullet servers.  
+
+NOTE: Since update 1.1.0, sendPush() now uses an efficient AsyncTask. If you want the old method (now deprecated),
+use directPush() with the same parameters as sendPush().  
 
 ### What do you plan to add?  
-I plan to add sending global pushes via command, player Pushbullet registration, and  
-more stable features in the future.  
+Everything seems to have been done. Working on slight fixes and tweaks as needed, but nothing else for now...  
 
 ### Why is this plugin connecting to server?  
 The plugin connects to an online server because pushses can't be curl()'d directly  

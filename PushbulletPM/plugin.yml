@@ -1,5 +1,11 @@
 name: PushbulletPM
 main: PushbulletPM\PushbulletPM
-version: 1.0.0
+version: 1.1.0
 api: [2.0.0, 1.0.0]
 author: HotFireyDeath/Chopstick Software
+
+commands:
+    pushbullet:
+        description: PushbulletPM main command.
+        usage: /pushbullet
+        permission: PushbulletPM.main
