@@ -72,7 +72,7 @@ class TapCommand extends PluginBase implements Listener{
                         $hf = fopen($this->getDataFolder()."/data.json", "w+");
                         fwrite($hf, json_encode($data));
                         fclose($hf);
-                        unset($this->tapwait[array_search($array. $this->tapwait)]);
+                        unset($this->tapwait[array_search($array, $this->tapwait)]);
                         $event->getPlayer()->sendMessage("Block successfully deleted.");
                         return true;
                     }
