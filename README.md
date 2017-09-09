@@ -1,4 +1,7 @@
 # PM-Plugins
+
+Note: No longer being updated. 
+
 A collection of my PocketMine plugins.     
 
 ---  
